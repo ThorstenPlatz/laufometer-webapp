@@ -1,0 +1,83 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<web-app xmlns="http://java.sun.com/xml/ns/j2ee"
+         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="http://java.sun.com/xml/ns/j2ee http://java.sun.com/xml/ns/j2ee/web-app_2_4.xsd"
+         version="2.4">
+
+    <display-name>Paulchens Laufometer</display-name>
+
+    <context-param>
+        <param-name>contextConfigLocation</param-name>
+        <param-value>/WEB-INF/applicationContext.xml</param-value>
+    </context-param>
+
+    <listener>
+        <listener-class>org.springframework.web.context.ContextLoaderListener</listener-class>
+    </listener>
+
+
+    <servlet>
+        <servlet-name>dispatcher</servlet-name>
+        <servlet-class>org.springframework.web.servlet.DispatcherServlet</servlet-class>
+        <load-on-startup>1</load-on-startup>
+    </servlet>
+
+    <servlet-mapping>
+        <servlet-name>dispatcher</servlet-name>
+        <url-pattern>/web/*</url-pattern>
+    </servlet-mapping>
+
+
+    <servlet>
+        <servlet-name>jersey</servlet-name>
+        <servlet-class>com.sun.jersey.spi.spring.container.servlet.SpringServlet</servlet-class>
+        <init-param>
+            <param-name>com.sun.jersey.api.json.POJOMappingFeature</param-name>
+            <param-value>true</param-value>
+        </init-param>
+        <init-param>
+            <param-name>com.sun.jersey.config.property.packages</param-name>
+            <param-value>de.tp82.laufometer.web.api.rest</param-value>
+        </init-param>
+        <load-on-startup>1</load-on-startup>
+    </servlet>
+
+    <servlet-mapping>
+        <servlet-name>jersey</servlet-name>
+        <url-pattern>/api/rest/*</url-pattern>
+    </servlet-mapping>
+
+    <!-- Charater Encoding Filter -->
+    <filter>
+        <filter-name>EncodingFilter</filter-name>
+        <!--
+          This filter ensures that JSON responses are UTF-8 encoded.
+          The property forceEncoding is enabled to supply the encoding in the HTTP response header. Without this
+          property set to true, the encoding information is not available in the response header. So the response is
+          still UTF-8 encoded, but the client has no explicit information about this.
+          According to RFC4627 JSON shall always be unicode encoded. So JSON clients should determine the actual
+          encoding (utf-8, utf-16, ... le/be) by looking at the first couple of char octets.
+          Current browsers are not explicit JSON clients, so they do not support this determination of the actual
+          encoding. So it depends on their default settings which encoding they'll choose.
+          For this, we force this filter to provide the encoding information in the response header, so any client
+          knows the encoding of the response.
+        -->
+        <filter-class>org.springframework.web.filter.CharacterEncodingFilter</filter-class>
+        <init-param>
+            <param-name>encoding</param-name>
+            <param-value>UTF-8</param-value>
+        </init-param>
+        <init-param>
+            <param-name>forceEncoding</param-name>
+            <param-value>true</param-value>
+        </init-param>
+    </filter>
+
+    <!-- Character Encoding Mapping -->
+    <filter-mapping>
+        <filter-name>EncodingFilter</filter-name>
+        <servlet-name>jersey</servlet-name>
+    </filter-mapping>
+</web-app>
+
+
