@@ -1,18 +1,21 @@
 package de.tp82.laufometer.web.persistence.dbo;
 
-import com.google.common.base.Preconditions;
 import com.google.common.base.Optional;
+import com.google.common.base.Preconditions;
 import org.springframework.stereotype.Service;
 
 import javax.jdo.PersistenceManager;
 import java.util.Date;
 import java.util.List;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 /**
  * @author Thorsten Platz
  */
 @Service
 public class RunRepositoryDBOImpl {
+	private static final Logger LOG = Logger.getLogger(RunRepositoryDBOImpl.class.getName());
 
 	/**
 	 * Returns all runs that occurred in the specified interval.
@@ -54,10 +57,14 @@ public class RunRepositoryDBOImpl {
 	public void store(List<RunDBO> runs) {
 		Preconditions.checkNotNull(runs);
 
+		if(LOG.isLoggable(Level.INFO))
+			LOG.info("Storing " + runs.size() + " in repository.");
+
 		PersistenceManager pm = PMF.get().getPersistenceManager();
 		try {
 			for(RunDBO run : runs) {
-				pm.makePersistent(run);
+				LOG.info("Storing run: " + run);
+//				pm.makePersistent(run);
 			}
 		} finally {
 			pm.close();

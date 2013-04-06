@@ -82,7 +82,7 @@ public class Run {
 		DecimalFormat numberFormatter = new DecimalFormat( "###.0" );
 		String dur = numberFormatter.format(getDuration());
 		String dist = numberFormatter.format(getDistance());
-		return "Run from " + begin + " till " + end + " over " + dist + " [m] in " + dur + " [s]";
+		return "Run(begin=" + begin + ", end=" + end + ", dist=" + dist + " [m], duration=" + dur + " [s])";
 	}
 
 	public static Run fromRunTicks(RunTicks ticks) {

@@ -57,4 +57,9 @@ public class RunDBO implements RunTicks {
 			dbos.add(RunDBO.from(run));
 		return dbos;
 	}
+
+	@Override
+	public String toString() {
+		return "RunDBO(key=" + key + ", #ticks=" + ticks.size() + ")";
+	}
 }

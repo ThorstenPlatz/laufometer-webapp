@@ -3,6 +3,10 @@
     <application>laufometer</application>
     <version>1</version>
 
+    <system-properties>
+        <property name="java.util.logging.config.file" value="WEB-INF/classes/config/logging.properties" />
+    </system-properties>
+
     <!--<system-info>-->
         <!--<property name="java.util.logging.config.file" value="WEB-INF/classes/logging.info"/>-->
     <!--</system-info>-->
