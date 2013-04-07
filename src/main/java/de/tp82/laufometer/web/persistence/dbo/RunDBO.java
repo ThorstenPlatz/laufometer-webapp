@@ -14,7 +14,7 @@ import java.util.Date;
 import java.util.List;
 
 /**
- * @author <a href="mailto:thorsten.platz@capgemini.com">Thorsten Platz</a>
+ * @author Thorsten Platz
  */
 @PersistenceCapable
 public class RunDBO implements RunTicks {

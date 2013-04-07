@@ -34,7 +34,7 @@ public class ImportResource {
 	@Autowired
 	private RunImporter runImporter;
 
-	private ImportResult importTicksInternal(String multipleTickStrings) {
+	private ImportResult importTicksInternal(String multipleTickStrings, boolean skipKnownTicks) {
 		Preconditions.checkNotNull(multipleTickStrings);
 		Preconditions.checkArgument(!multipleTickStrings.isEmpty(), "Parameter ticks cannot be empty!");
 
@@ -63,7 +63,7 @@ public class ImportResource {
 
 		List<Run> importedRuns = Collections.emptyList();
 		try {
-			importedRuns = runImporter.importTicksAsRuns(ticks);
+			importedRuns = runImporter.importTicksAsRuns(ticks, skipKnownTicks);
 		} catch (Exception exc) {
 			errors.add("Error during import: " + exc);
 		}
@@ -75,8 +75,10 @@ public class ImportResource {
 	@POST
 	@Path(value = "/ticks")
 	@Consumes(MediaType.APPLICATION_FORM_URLENCODED)
-	public Response importTicks(@FormParam(value = "ticks") String multipleTickStrings) {
-		ImportResult result = importTicksInternal(multipleTickStrings);
+	@Produces(MediaType.APPLICATION_JSON)
+	public Response importTicks(@FormParam(value = "ticks") String multipleTickStrings,
+	                            @QueryParam(value="skipKnownTicks") @DefaultValue(value = "true") boolean skipKnownTicks) {
+		ImportResult result = importTicksInternal(multipleTickStrings, skipKnownTicks);
 		if(result.getErrors().isEmpty())
 			return Response.ok().entity(result).build();
 		else
@@ -87,8 +89,9 @@ public class ImportResource {
 	@Path(value = "/ticks")
 	@Consumes(MediaType.APPLICATION_FORM_URLENCODED)
 	@Produces(MediaType.TEXT_HTML)
-	public Response importTicksForHtmlView(@FormParam(value = "ticks") String multipleTickStrings) {
-		ImportResult result = importTicksInternal(multipleTickStrings);
+	public Response importTicksForHtmlView(@FormParam(value = "ticks") String multipleTickStrings,
+	                                       @QueryParam(value="skipKnownTicks") @DefaultValue(value = "true") boolean skipKnownTicks) {
+		ImportResult result = importTicksInternal(multipleTickStrings, skipKnownTicks);
 
 		Map<String, Object> model = Maps.newHashMap();
 		model.put("result", result);
@@ -99,5 +102,6 @@ public class ImportResource {
 			return Response.ok(resultView).build();
 		else
 			return Response.status(Response.Status.BAD_REQUEST).entity(resultView).build();
+
 	}
 }

@@ -1,11 +1,10 @@
 package de.tp82.laufometer.web.core;
 
+import com.google.common.base.Optional;
 import com.google.common.base.Stopwatch;
 import com.google.common.collect.Lists;
 import de.tp82.laufometer.web.model.Run;
 import de.tp82.laufometer.web.persistence.RunTicks;
-import de.tp82.laufometer.web.persistence.dbo.RunDBO;
-import de.tp82.laufometer.web.persistence.dbo.RunRepositoryDBOImpl;
 import org.joda.time.DateTime;
 import org.joda.time.Duration;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -15,6 +14,7 @@ import org.springframework.stereotype.Service;
 import javax.annotation.PostConstruct;
 import java.util.Collections;
 import java.util.Date;
+import java.util.Iterator;
 import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -39,7 +39,7 @@ public class RunImporter {
 	private double maxTickInterval;
 
 	@Autowired
-	RunRepositoryDBOImpl runRepository;
+	RunRepository runRepository;
 
 	@PostConstruct
 	private void init() {
@@ -55,16 +55,18 @@ public class RunImporter {
 					+ "- maxTickInterval=" + maxTickInterval);
 	}
 
-	public List<Run> importTicksAsRuns(List<Date> ticks) {
+	public List<Run> importTicksAsRuns(List<Date> ticks, boolean skipKnownTicks) {
 		Stopwatch importDuration = new Stopwatch();
 		importDuration.start();
 
 		if(LOG.isLoggable(Level.INFO))
 			LOG.info("Importing " + ticks.size() + " ticks...");
 
+		if(skipKnownTicks)
+			skipKnownTicks(ticks);
 		List<Run> runs = detectRuns(ticks);
 
-		runRepository.store(RunDBO.from(runs));
+		runRepository.store(runs);
 
 		importDuration.stop();
 
@@ -73,6 +75,32 @@ public class RunImporter {
 
 		return Collections.unmodifiableList(runs);
 
+	}
+
+	/**
+	 * Remove ticks from the beginning of the list if they are older than the beginning of the
+	 * last known run. Then they are already imported.
+	 * @param ticks ticks to import
+	 */
+	private void skipKnownTicks(List<Date> ticks) {
+		Optional<Run> latestRun = runRepository.findLatestRun();
+		if(latestRun.isPresent()) {
+			int initialTicks = ticks.size();
+
+			Iterator<Date> itr = ticks.listIterator();
+			while(itr.hasNext()) {
+				Date tick = itr.next();
+				if(tick.before(latestRun.get().getBegin()))
+					itr.remove();
+				else
+					break;
+			}
+			if(LOG.isLoggable(Level.FINE))
+				LOG.fine("Skipped " + (ticks.size() - initialTicks) + " ticks before latest run: " + latestRun);
+		} else {
+			if(LOG.isLoggable(Level.FINE))
+				LOG.fine("No previous run exists in the repository.");
+		}
 	}
 
 	private List<Run> detectRuns(List<Date> ticks) {

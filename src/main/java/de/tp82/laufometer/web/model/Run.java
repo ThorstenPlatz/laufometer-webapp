@@ -20,7 +20,7 @@ public class Run {
 	/**
 	 * Distance per tick in meters [m]; this equates to the wheels inner circumference.
 	 */
-	private static final double DISTANCE_PER_TICK = 0.5969;
+	private final double DISTANCE_PER_TICK = 0.5969;
 
 	private List<Date> ticks;
 	private int first;
