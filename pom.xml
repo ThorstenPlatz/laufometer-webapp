@@ -143,6 +143,16 @@
             <groupId>com.google.appengine.orm</groupId>
             <artifactId>datanucleus-appengine</artifactId>
             <version>2.1.2</version>
+            <exclusions>
+                <exclusion>
+                    <artifactId>appengine-api-1.0-sdk</artifactId>
+                    <groupId>com.google.appengine</groupId>
+                </exclusion>
+                <exclusion>
+                    <artifactId>datanucleus-core</artifactId>
+                    <groupId>org.datanucleus</groupId>
+                </exclusion>
+            </exclusions>
         </dependency>
 
         <dependency>

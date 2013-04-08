@@ -3,6 +3,7 @@ package de.tp82.laufometer.web.api.rest;
 import com.google.common.collect.Maps;
 import com.sun.jersey.api.ParamException;
 import com.sun.jersey.api.view.Viewable;
+import de.tp82.laufometer.util.ExceptionHandling;
 import de.tp82.laufometer.web.api.rest.model.ErrorResult;
 import org.springframework.stereotype.Component;
 
@@ -11,9 +12,6 @@ import javax.ws.rs.core.HttpHeaders;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
 import javax.ws.rs.ext.Provider;
-import java.io.PrintWriter;
-import java.io.StringWriter;
-import java.io.Writer;
 import java.util.List;
 import java.util.Map;
 import java.util.logging.Level;
@@ -33,10 +31,7 @@ public class ExceptionMapper implements javax.ws.rs.ext.ExceptionMapper<Throwabl
 	@Override
 	public Response toResponse(Throwable throwable) {
 		if(LOG.isLoggable(Level.WARNING)) {
-			final Writer result = new StringWriter();
-			final PrintWriter printWriter = new PrintWriter(result);
-			throwable.printStackTrace(printWriter);
-			final String stackTracke = result.toString();
+			final String stackTracke = ExceptionHandling.getStacktrace(throwable);
 			LOG.warning("Catching uncaught exception: " + throwable + ". Stacktrace follows:\n" + stackTracke);
 		}
 

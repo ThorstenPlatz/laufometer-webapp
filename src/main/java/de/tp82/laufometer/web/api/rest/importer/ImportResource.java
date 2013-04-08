@@ -6,6 +6,7 @@ import com.google.common.base.Stopwatch;
 import com.google.common.collect.Lists;
 import com.google.common.collect.Maps;
 import com.sun.jersey.api.view.Viewable;
+import de.tp82.laufometer.util.ExceptionHandling;
 import de.tp82.laufometer.web.DateUtils;
 import de.tp82.laufometer.web.api.rest.importer.model.ImportResult;
 import de.tp82.laufometer.web.core.RunImporter;
@@ -23,6 +24,8 @@ import java.util.Date;
 import java.util.List;
 import java.util.Map;
 import java.util.concurrent.TimeUnit;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 /**
  * @author Thorsten Platz
@@ -31,11 +34,13 @@ import java.util.concurrent.TimeUnit;
 @Path(value="/import")
 @Produces(MediaType.APPLICATION_JSON)
 public class ImportResource {
+	private static final Logger LOG = Logger.getLogger(ImportResource.class.getName());
+
 	@Autowired
 	private RunImporter runImporter;
 
 	private ImportResult importTicksInternal(String multipleTickStrings, boolean skipKnownTicks) {
-		Preconditions.checkNotNull(multipleTickStrings);
+		Preconditions.checkNotNull(multipleTickStrings, "Parameter ticks is mandatory!");
 		Preconditions.checkArgument(!multipleTickStrings.isEmpty(), "Parameter ticks cannot be empty!");
 
 		Stopwatch importDuration = new Stopwatch();
@@ -65,6 +70,10 @@ public class ImportResource {
 		try {
 			importedRuns = runImporter.importTicksAsRuns(ticks, skipKnownTicks);
 		} catch (Exception exc) {
+			if(LOG.isLoggable(Level.WARNING)) {
+				String stacktrace = ExceptionHandling.getStacktrace(exc);
+				LOG.warning("Error during import: " + exc + ". Stacktrace follows:\n" + stacktrace);
+			}
 			errors.add("Error during import: " + exc);
 		}
 		importDuration.stop();

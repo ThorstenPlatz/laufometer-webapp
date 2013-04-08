@@ -1,6 +1,6 @@
 package de.tp82.laufometer.web.model;
 
-import com.google.appengine.repackaged.com.google.common.base.Preconditions;
+import com.google.common.base.Preconditions;
 import de.tp82.laufometer.web.persistence.RunTicks;
 import org.joda.time.DateTime;
 import org.joda.time.Interval;
@@ -28,6 +28,8 @@ public class Run {
 
 	private Run(RunTicks runTicks) {
 		Preconditions.checkNotNull(runTicks);
+		Preconditions.checkNotNull(runTicks.getTicks());
+		Preconditions.checkArgument(!runTicks.getTicks().isEmpty());
 
 		ticks = runTicks.getTicks();
 		first = 0;
