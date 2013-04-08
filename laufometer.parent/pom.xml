@@ -1,0 +1,143 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project xmlns="http://maven.apache.org/POM/4.0.0"
+         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+    <modelVersion>4.0.0</modelVersion>
+
+    <groupId>de.tp82.laufometer</groupId>
+    <artifactId>laufometer.parent</artifactId>
+    <version>1.0-SNAPSHOT</version>
+
+    <packaging>pom</packaging>
+
+    <modules>
+        <module>../laufometer.model</module>
+        <module>../laufometer.core</module>
+    	<module>../laufometer.persistence.api</module>
+        <module>../laufometer.persistence.datastore</module>
+    	<module>../laufometer.webapp</module>
+    </modules>
+
+    <properties>
+        <gae.application.version>1</gae.application.version>
+
+        <java.jdk.version>1.6</java.jdk.version>
+        <junit.version>4.8.1</junit.version>
+        <spring.version>3.0.1.RELEASE</spring.version>
+        <appengine.target.version>1.7.6</appengine.target.version>
+
+        <gae.home>${settings.localRepository}/com/google/appengine/appengine-java-sdk/${appengine.target.version}/appengine-java-sdk-${appengine.target.version}</gae.home>
+        <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+    </properties>
+
+    <dependencies>
+        <dependency>
+            <groupId>com.google.guava</groupId>
+            <artifactId>guava</artifactId>
+            <version>14.0.1</version>
+        </dependency>
+
+        <!-- Google App Engine -->
+        <dependency>
+            <groupId>com.google.appengine</groupId>
+            <artifactId>appengine-api-1.0-sdk</artifactId>
+            <version>${appengine.target.version}</version>
+        </dependency>
+
+        <!-- Spring -->
+        <dependency>
+            <groupId>org.springframework</groupId>
+            <artifactId>spring-webmvc</artifactId>
+            <version>${spring.version}</version>
+        </dependency>
+        <dependency>
+            <groupId>org.springframework</groupId>
+            <artifactId>spring-test</artifactId>
+            <scope>test</scope>
+            <version>${spring.version}</version>
+        </dependency>
+
+        <dependency>
+            <groupId>joda-time</groupId>
+            <artifactId>joda-time</artifactId>
+            <version>2.2</version>
+        </dependency>
+
+        <!-- Test dependencies -->
+        <dependency>
+            <groupId>junit</groupId>
+            <artifactId>junit</artifactId>
+            <version>${junit.version}</version>
+            <scope>test</scope>
+        </dependency>
+
+        <dependency>
+            <groupId>org.mockito</groupId>
+            <artifactId>mockito-all</artifactId>
+            <version>1.9.0</version>
+            <scope>test</scope>
+        </dependency>
+
+        <dependency>
+            <groupId>com.google.appengine</groupId>
+            <artifactId>appengine-testing</artifactId>
+            <version>${appengine.target.version}</version>
+            <scope>test</scope>
+        </dependency>
+        <dependency>
+            <groupId>com.google.appengine</groupId>
+            <artifactId>appengine-api-stubs</artifactId>
+            <version>${appengine.target.version}</version>
+            <scope>test</scope>
+        </dependency>
+    </dependencies>
+
+
+    <build>
+        <plugins>
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <version>2.5.1</version>
+                <artifactId>maven-compiler-plugin</artifactId>
+                <configuration>
+                    <source>${java.jdk.version}</source>
+                    <target>${java.jdk.version}</target>
+                </configuration>
+            </plugin>
+        </plugins>
+    </build>
+
+
+
+    <repositories>
+        <repository>
+            <id>DataNucleus_Repos2</id>
+            <name>DataNucleus Repository</name>
+            <url>http://www.datanucleus.org/downloads/maven2</url>
+        </repository>
+
+        <repository>
+            <id>maven-gae-plugin-repo</id>
+            <name>maven-gae-plugin repository</name>
+            <url>
+                http://maven-gae-plugin.googlecode.com/svn/repository
+            </url>
+        </repository>
+    </repositories>
+
+    <pluginRepositories>
+        <pluginRepository>
+            <id>maven-gae-plugin-repo</id>
+            <name>maven-gae-plugin repository</name>
+            <url>
+                http://maven-gae-plugin.googlecode.com/svn/repository
+            </url>
+        </pluginRepository>
+
+        <pluginRepository>
+            <id>DataNucleus_2</id>
+            <url>http://www.datanucleus.org/downloads/maven2/</url>
+        </pluginRepository>
+    </pluginRepositories>
+
+</project>
