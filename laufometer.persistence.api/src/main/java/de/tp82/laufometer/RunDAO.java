@@ -3,6 +3,7 @@ package de.tp82.laufometer;
 import com.google.common.base.Optional;
 import de.tp82.laufometer.model.Run;
 
+import java.util.Date;
 import java.util.List;
 
 /**
@@ -37,5 +38,15 @@ public interface RunDAO {
 	 * @throws IllegalArgumentException if the given ID does not exist
 	 */
 	Run getRun(String runId);
+
+	/**
+	 * Finds all Runs that occurred in the given interval.
+	 * Runs that where partly in this interval are also returned.
+	 *
+	 * @param from begin of the interval (inclusive)
+	 * @param to end of the interval (inclusive)
+	 * @return the runs that happened in the interval
+	 */
+	List<Run> findRuns(Date from, Date to);
 
 }

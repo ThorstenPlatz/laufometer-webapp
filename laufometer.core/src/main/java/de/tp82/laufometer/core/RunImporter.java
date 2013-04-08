@@ -119,19 +119,27 @@ public class RunImporter {
 			if(tickTime.isBefore(latestNextTick))
 				runTicks.add(tick);
 			else {
-				Run run = Run.fromRunTicks(new RunTickContainer(runTicks));
+				Run run = createRun(runTicks);
 				runs.add(run);
-
-				if(LOG.isLoggable(Level.INFO))
-					LOG.info("Detected run: " + run);
 
 				runBegin = tickTime;
 				runTicks = Lists.newArrayList();
 			}
-
+		}
+		if(!runTicks.isEmpty()) {
+			Run run = createRun(runTicks);
+			runs.add(run);
 		}
 
 		return runs;
+	}
+
+	private Run createRun(List<Date> runTicks) {
+		Run run = Run.fromRunTicks(new RunTickContainer(runTicks));
+
+		if(LOG.isLoggable(Level.INFO))
+			LOG.info("Detected run: " + run);
+		return run;
 	}
 
 	private class RunTickContainer implements RunTickProvider {

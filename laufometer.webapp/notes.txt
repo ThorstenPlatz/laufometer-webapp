@@ -2,5 +2,4 @@ TICKS=$(cat triggers_2013-03-19); curl --data-urlencode "ticks=$TICKS" http://lo
 
 
 see
-http://stackoverflow.com/questions/6933851/what-dependencies-are-required-for-datanucleus-3-0-0-release
-http://stackoverflow.com/questions/7222687/maven-gae-plugin-using-jdo
+https://developers.google.com/appengine/docs/java/datastore/overview

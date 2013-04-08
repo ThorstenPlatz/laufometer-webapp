@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="ProjectModuleManager">
+    <modules>
+      <module fileurl="file://$PROJECT_DIR$/laufometer.core/laufometer.core.iml" filepath="$PROJECT_DIR$/laufometer.core/laufometer.core.iml" />
+      <module fileurl="file://$PROJECT_DIR$/laufometer.model/laufometer.model.iml" filepath="$PROJECT_DIR$/laufometer.model/laufometer.model.iml" />
+      <module fileurl="file://$PROJECT_DIR$/laufometer.parent/laufometer.parent.iml" filepath="$PROJECT_DIR$/laufometer.parent/laufometer.parent.iml" />
+      <module fileurl="file://$PROJECT_DIR$/laufometer.persistence.api/laufometer.persistence.api.iml" filepath="$PROJECT_DIR$/laufometer.persistence.api/laufometer.persistence.api.iml" />
+      <module fileurl="file://$PROJECT_DIR$/laufometer.persistence.datastore/laufometer.persistence.datastore.iml" filepath="$PROJECT_DIR$/laufometer.persistence.datastore/laufometer.persistence.datastore.iml" />
+      <module fileurl="file://$PROJECT_DIR$/laufometer.webapp/laufometer.webapp.iml" filepath="$PROJECT_DIR$/laufometer.webapp/laufometer.webapp.iml" />
+    </modules>
+  </component>
+</project>
+

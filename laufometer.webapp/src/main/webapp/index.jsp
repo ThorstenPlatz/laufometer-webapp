@@ -16,6 +16,7 @@
     <h1>Upload Ticks</h1>
     <h2>Menu</h2>
     <ul>
+        <li><a href="/web/ticks">list all ticks</a></li>
         <li><a href="/web/ticks/upload">upload ticks</a></li>
     </ul>
 </div> <!-- container -->

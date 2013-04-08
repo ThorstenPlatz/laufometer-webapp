@@ -29,8 +29,7 @@ public class RunRepository {
 		Date until = to.isPresent() ? to.get() : new Date();
 		Preconditions.checkArgument(from.before(until), "from must be before to");
 
-		//TODO tp: implement
-		throw new IllegalStateException("Not yet implemented!");
+		return db.findRuns(from, until);
 	}
 
 	public void store(List<Run> runs) {

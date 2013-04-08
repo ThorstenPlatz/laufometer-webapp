@@ -8,9 +8,11 @@
 <html>
     <head>
         <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+        <link href="/bootstrap/css/bootstrap.min.css" rel="stylesheet" media="screen">
         <title>All Ticks</title>
     </head>
     <body>
+    <div class="container">
         <h1>List of all Ticks</h1>
 
         <ul>
@@ -18,5 +20,6 @@
                 <li><c:out value="${tick}" /></li>
             </c:forEach>
         </ul>
+    </div>
     </body>
 </html>
