@@ -3,18 +3,17 @@ package de.tp82.laufometer.persistence.mock;
 import com.google.appengine.repackaged.com.google.common.collect.Maps;
 import com.google.common.base.Optional;
 import com.google.common.collect.Lists;
-import de.tp82.laufometer.RunDAO;
 import de.tp82.laufometer.model.Run;
-import org.springframework.stereotype.Service;
+import de.tp82.laufometer.persistence.RunDAO;
 
 import java.util.Date;
 import java.util.List;
 import java.util.Map;
+import java.util.Set;
 
 /**
  * @author Thorsten Platz
  */
-@Service
 public class MapBackedRepository implements RunDAO {
 
 	private final static Map<String, Run> storage = Maps.newHashMap();
@@ -33,7 +32,7 @@ public class MapBackedRepository implements RunDAO {
 	}
 
 	@Override
-	public void save(List<Run> runs) {
+	public void save(Set<Run> runs) {
 		for(Run run : runs) {
 			storage.put(run.getId(), run);
 		}

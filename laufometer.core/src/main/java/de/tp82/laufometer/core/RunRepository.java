@@ -2,13 +2,14 @@ package de.tp82.laufometer.core;
 
 import com.google.common.base.Optional;
 import com.google.common.base.Preconditions;
-import de.tp82.laufometer.RunDAO;
+import de.tp82.laufometer.persistence.RunDAO;
 import de.tp82.laufometer.model.Run;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.Date;
 import java.util.List;
+import java.util.Set;
 
 /**
  * @author Thorsten Platz
@@ -32,7 +33,7 @@ public class RunRepository {
 		return db.findRuns(from, until);
 	}
 
-	public void store(List<Run> runs) {
+	public void store(Set<Run> runs) {
 		db.save(runs);
 	}
 

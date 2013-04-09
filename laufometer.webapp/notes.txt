@@ -3,3 +3,4 @@ TICKS=$(cat triggers_2013-03-19); curl --data-urlencode "ticks=$TICKS" http://lo
 
 see
 https://developers.google.com/appengine/docs/java/datastore/overview
+http://code.google.com/p/objectify-appengine/wiki/MavenRepository

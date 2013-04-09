@@ -28,6 +28,16 @@
     <orderEntry type="library" name="Maven: aopalliance:aopalliance:1.0" level="project" />
     <orderEntry type="library" name="Maven: org.springframework:spring-expression:3.0.1.RELEASE" level="project" />
     <orderEntry type="library" name="Maven: joda-time:joda-time:2.2" level="project" />
+    <orderEntry type="library" name="Maven: com.googlecode.objectify:objectify:4.0b1" level="project" />
+    <orderEntry type="library" name="Maven: org.joda:joda-money:0.6" level="project" />
+    <orderEntry type="library" name="Maven: com.google.gwt:gwt-user:2.5.0-rc1" level="project" />
+    <orderEntry type="library" name="Maven: javax.validation:validation-api:1.0.0.GA" level="project" />
+    <orderEntry type="library" name="Maven: javax.validation:validation-api:sources:1.0.0.GA" level="project" />
+    <orderEntry type="library" name="Maven: org.json:json:20090211" level="project" />
+    <orderEntry type="library" name="Maven: com.fasterxml.jackson.core:jackson-databind:2.0.6" level="project" />
+    <orderEntry type="library" name="Maven: com.fasterxml.jackson.core:jackson-annotations:2.0.6" level="project" />
+    <orderEntry type="library" name="Maven: com.fasterxml.jackson.core:jackson-core:2.0.6" level="project" />
+    <orderEntry type="library" name="Maven: com.google.appengine:appengine-api-labs:1.7.2" level="project" />
     <orderEntry type="library" scope="TEST" name="Maven: org.springframework:spring-test:3.0.1.RELEASE" level="project" />
     <orderEntry type="library" scope="TEST" name="Maven: junit:junit:4.8.1" level="project" />
     <orderEntry type="library" scope="TEST" name="Maven: org.mockito:mockito-all:1.9.0" level="project" />

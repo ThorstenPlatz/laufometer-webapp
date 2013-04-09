@@ -8,6 +8,7 @@ import org.joda.time.Interval;
 import java.text.DecimalFormat;
 import java.text.SimpleDateFormat;
 import java.util.Collections;
+import java.util.Comparator;
 import java.util.Date;
 import java.util.List;
 
@@ -101,5 +102,15 @@ public class Run implements RunTickProvider {
 
 	public static Run fromRunTicks(RunTickProvider ticks) {
 		return new Run(ticks);
+	}
+
+	public static class RunBeginComparator implements Comparator<Run> {
+		@Override
+		public int compare(Run o1, Run o2) {
+			Preconditions.checkNotNull(o1);
+			Preconditions.checkNotNull(o2);
+
+			return o1.getBegin().compareTo(o2.getBegin());
+		}
 	}
 }

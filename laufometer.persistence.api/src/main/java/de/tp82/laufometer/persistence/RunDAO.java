@@ -1,10 +1,11 @@
-package de.tp82.laufometer;
+package de.tp82.laufometer.persistence;
 
 import com.google.common.base.Optional;
 import de.tp82.laufometer.model.Run;
 
 import java.util.Date;
 import java.util.List;
+import java.util.Set;
 
 /**
  * DAO for accessing runs.
@@ -26,7 +27,7 @@ public interface RunDAO {
 	 *
 	 * @param runs the runs to be persisted
 	 */
-	void save(List<Run> runs);
+	void save(Set<Run> runs);
 
 	/**
 	 * Returns the run for the given ID.

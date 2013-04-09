@@ -1,5 +1,6 @@
 package de.tp82.laufometer.core;
 
+import com.google.common.collect.Sets;
 import com.google.common.base.Optional;
 import com.google.common.base.Stopwatch;
 import com.google.common.collect.Lists;
@@ -66,7 +67,7 @@ public class RunImporter {
 			skipKnownTicks(ticks);
 		List<Run> runs = detectRuns(ticks);
 
-		runRepository.store(runs);
+		runRepository.store(Sets.newHashSet(runs));
 
 		importDuration.stop();
 

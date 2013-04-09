@@ -31,6 +31,16 @@
           <element id="archive" name="laufometer.persistence.datastore-1.0-SNAPSHOT.jar">
             <element id="module-output" name="laufometer.persistence.datastore" />
           </element>
+          <element id="library" level="project" name="Maven: com.googlecode.objectify:objectify:4.0b1" />
+          <element id="library" level="project" name="Maven: org.joda:joda-money:0.6" />
+          <element id="library" level="project" name="Maven: com.google.gwt:gwt-user:2.5.0-rc1" />
+          <element id="library" level="project" name="Maven: javax.validation:validation-api:1.0.0.GA" />
+          <element id="library" level="project" name="Maven: javax.validation:validation-api:sources:1.0.0.GA" />
+          <element id="library" level="project" name="Maven: org.json:json:20090211" />
+          <element id="library" level="project" name="Maven: com.fasterxml.jackson.core:jackson-databind:2.0.6" />
+          <element id="library" level="project" name="Maven: com.fasterxml.jackson.core:jackson-annotations:2.0.6" />
+          <element id="library" level="project" name="Maven: com.fasterxml.jackson.core:jackson-core:2.0.6" />
+          <element id="library" level="project" name="Maven: com.google.appengine:appengine-api-labs:1.7.2" />
           <element id="library" level="project" name="Maven: jstl:jstl:1.2" />
           <element id="library" level="project" name="Maven: org.springframework:spring-web:3.0.1.RELEASE" />
           <element id="library" level="project" name="Maven: org.springframework:spring-webmvc:3.0.1.RELEASE" />
@@ -50,7 +60,6 @@
           <element id="library" level="project" name="Maven: org.codehaus.jackson:jackson-xc:1.9.2" />
           <element id="library" level="project" name="Maven: com.sun.jersey.contribs:jersey-spring:1.12" />
           <element id="library" level="project" name="Maven: com.sun.jersey:jersey-servlet:1.12" />
-          <element id="library" level="project" name="Maven: org.springframework:spring-aop:3.0.1.RELEASE" />
         </element>
       </element>
     </root>
