@@ -1,24 +1,28 @@
 package de.tp82.laufometer.persistence.impl.objectify;
 
-import com.google.common.collect.Sets;
 import com.google.common.base.Optional;
 import com.google.common.collect.Lists;
+import com.google.common.collect.Sets;
 import com.googlecode.objectify.Key;
 import com.googlecode.objectify.Objectify;
 import com.googlecode.objectify.cmd.Query;
-import de.tp82.laufometer.model.Run;
+import de.tp82.laufometer.model.run.Run;
 import de.tp82.laufometer.persistence.EntityNotFoundException;
 import de.tp82.laufometer.persistence.RunDAO;
 import de.tp82.laufometer.persistence.impl.objectify.dbo.RunDBO;
 import org.springframework.stereotype.Service;
 
 import java.util.*;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 /**
  * @author Thorsten Platz
  */
 @Service
-public class RunDAOObjectifyImpl implements RunDAO {
+public class RunDAOOfyImpl implements RunDAO {
+	private static final Logger LOG = Logger.getLogger(RunDAOOfyImpl.class.getName());
+
 	private Objectify ofy = OfyService.ofy();
 
 	@Override
@@ -33,6 +37,9 @@ public class RunDAOObjectifyImpl implements RunDAO {
 
 	@Override
 	public void save(Set<Run> runs) {
+		if(LOG.isLoggable(Level.INFO))
+			LOG.info("Storing runs: " + runs);
+
 		Iterable<RunDBO> dbos = RunDBO.from(runs);
 		ofy.save().entities(dbos);
 	}

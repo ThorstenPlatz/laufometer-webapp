@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<cronentries>
+    <cron>
+        <url>/api/watchdog/check</url>
+        <description>Check Keepalive Watchdogs. Cron schedule must match the configured keepalive ping interval.</description>
+        <schedule>every 1 minutes</schedule>
+    </cron>
+</cronentries>

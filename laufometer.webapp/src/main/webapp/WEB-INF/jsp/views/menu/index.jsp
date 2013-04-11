@@ -8,16 +8,29 @@
 <html>
 <head>
     <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
-    <title>Upload Ticks</title>
+    <title>laufometer</title>
     <link href="/bootstrap/css/bootstrap.min.css" rel="stylesheet" media="screen">
 </head>
 <body>
 <div class="container">
-    <h1>Upload Ticks</h1>
+    <h1>Laufometer</h1>
     <h2>Menu</h2>
     <ul>
-        <li><a href="/web/ticks">list all ticks</a></li>
-        <li><a href="/web/ticks/upload">upload ticks</a></li>
+        <li>
+            <h3>ticks</h3>
+            <ul>
+                <li><a href="/web/tick">list all ticks</a></li>
+                <li><a href="/web/tick/upload">upload ticks</a></li>
+            </ul>
+        </li>
+        <li>
+            <h3>watchdogs</h3>
+            <ul>
+                <li><a href="/web/watchdog/">list watchdogs</a></li>
+                <li><a href="/web/watchdog/create">create watchdog</a></li>
+                <li><a href="/web/watchdog/delete">delete watchdog</a></li>
+            </ul>
+        </li>
     </ul>
 </div> <!-- container -->
 </body>

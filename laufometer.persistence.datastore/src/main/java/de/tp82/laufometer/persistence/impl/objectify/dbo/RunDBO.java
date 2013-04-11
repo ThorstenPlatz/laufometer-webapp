@@ -7,8 +7,8 @@ import com.google.common.collect.Lists;
 import com.googlecode.objectify.annotation.Entity;
 import com.googlecode.objectify.annotation.Id;
 import com.googlecode.objectify.annotation.Index;
-import de.tp82.laufometer.model.Run;
-import de.tp82.laufometer.model.RunTickProvider;
+import de.tp82.laufometer.model.run.Run;
+import de.tp82.laufometer.model.run.RunTickProvider;
 
 import java.util.Collections;
 import java.util.Date;

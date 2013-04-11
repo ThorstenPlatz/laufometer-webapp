@@ -3,7 +3,7 @@ package de.tp82.laufometer.core;
 import com.google.common.base.Optional;
 import com.google.common.base.Preconditions;
 import de.tp82.laufometer.persistence.RunDAO;
-import de.tp82.laufometer.model.Run;
+import de.tp82.laufometer.model.run.Run;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 

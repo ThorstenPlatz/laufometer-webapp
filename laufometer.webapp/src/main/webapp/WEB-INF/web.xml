@@ -48,7 +48,7 @@
 
     <servlet-mapping>
         <servlet-name>jersey</servlet-name>
-        <url-pattern>/api/rest/*</url-pattern>
+        <url-pattern>/api/*</url-pattern>
     </servlet-mapping>
 
     <!-- Charater Encoding Filter -->
@@ -82,6 +82,33 @@
         <filter-name>EncodingFilter</filter-name>
         <servlet-name>jersey</servlet-name>
     </filter-mapping>
+
+    <!--
+        secure application
+        - default: only access for admins
+        - expose public parts explicitly
+    -->
+    <security-constraint>
+        <web-resource-collection>
+            <web-resource-name>application default</web-resource-name>
+            <url-pattern>/*</url-pattern>
+        </web-resource-collection>
+        <auth-constraint>
+            <role-name>admin</role-name>
+        </auth-constraint>
+    </security-constraint>
+    <security-constraint>
+        <web-resource-collection>
+            <web-resource-name>public rest api</web-resource-name>
+            <url-pattern>/api/public/*</url-pattern>
+        </web-resource-collection>
+    </security-constraint>
+    <security-constraint>
+        <web-resource-collection>
+            <web-resource-name>public web</web-resource-name>
+            <url-pattern>/web/public/*</url-pattern>
+        </web-resource-collection>
+    </security-constraint>
 </web-app>
 
 

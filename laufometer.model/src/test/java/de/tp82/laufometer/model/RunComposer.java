@@ -1,6 +1,8 @@
 package de.tp82.laufometer.model;
 
 import com.google.common.collect.Lists;
+import de.tp82.laufometer.model.run.Run;
+import de.tp82.laufometer.model.run.RunTickProvider;
 import org.joda.time.DateTime;
 import org.joda.time.Duration;
 

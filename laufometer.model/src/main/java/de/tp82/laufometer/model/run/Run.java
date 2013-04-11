@@ -1,4 +1,4 @@
-package de.tp82.laufometer.model;
+package de.tp82.laufometer.model.run;
 
 import com.google.common.base.Preconditions;
 import com.google.common.collect.Lists;
@@ -97,7 +97,7 @@ public class Run implements RunTickProvider {
 		DecimalFormat numberFormatter = new DecimalFormat( "###.0" );
 		String dur = numberFormatter.format(getDuration());
 		String dist = numberFormatter.format(getDistance());
-		return "Run(begin=" + begin + ", end=" + end + ", dist=" + dist + " [m], duration=" + dur + " [s])";
+		return "Run{begin=" + begin + ", end=" + end + ", dist=" + dist + " [m], duration=" + dur + " [s]}";
 	}
 
 	public static Run fromRunTicks(RunTickProvider ticks) {

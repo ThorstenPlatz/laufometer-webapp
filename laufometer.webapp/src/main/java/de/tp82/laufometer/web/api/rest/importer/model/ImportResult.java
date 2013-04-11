@@ -1,6 +1,6 @@
 package de.tp82.laufometer.web.api.rest.importer.model;
 
-import de.tp82.laufometer.model.Run;
+import de.tp82.laufometer.model.run.Run;
 
 import java.util.Date;
 import java.util.List;

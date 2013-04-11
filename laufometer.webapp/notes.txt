@@ -1,6 +1,18 @@
 TICKS=$(cat triggers_2013-03-19); curl --data-urlencode "ticks=$TICKS" http://localhost:8080/api/rest/import/ticksTICKS=$(cat triggers_2013-03-19); curl --data-urlencode "ticks=$TICKS" http://localhost:8080/api/rest/import/ticks
 
 
-see
-https://developers.google.com/appengine/docs/java/datastore/overview
-http://code.google.com/p/objectify-appengine/wiki/MavenRepository
+TODO:
+- Watchdog für laufometer client
+    - clientseitiger Watchdog sendet regelmäßig Keepalives an Server
+    - Server sendet Mail wenn Keepalive-Ping ausbleibt
+
+- Importer muss Zeitzone berücksichtigen
+    - laufometer client muss Zeitzone in trigger-logs schreiben
+
+- REST-API (und sonstige schreibende Zugriffe) absichern
+    - https://developers.google.com/appengine/docs/java/config/webxml#Security_and_Authentication
+    - http://maimon-it.blogspot.de/2010/04/authenticating-google-app-engine-apps.html
+
+- Run views (jsp)
+    - darauf aufbauend dann die GUI weiterentwickeln
+

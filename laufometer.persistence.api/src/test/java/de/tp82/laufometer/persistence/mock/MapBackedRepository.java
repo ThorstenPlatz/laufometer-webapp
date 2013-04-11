@@ -3,7 +3,7 @@ package de.tp82.laufometer.persistence.mock;
 import com.google.appengine.repackaged.com.google.common.collect.Maps;
 import com.google.common.base.Optional;
 import com.google.common.collect.Lists;
-import de.tp82.laufometer.model.Run;
+import de.tp82.laufometer.model.run.Run;
 import de.tp82.laufometer.persistence.RunDAO;
 
 import java.util.Date;

@@ -1,7 +1,7 @@
 package de.tp82.laufometer.persistence;
 
 import com.google.common.base.Optional;
-import de.tp82.laufometer.model.Run;
+import de.tp82.laufometer.model.run.Run;
 
 import java.util.Date;
 import java.util.List;

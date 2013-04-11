@@ -1,24 +1,21 @@
 package de.tp82.laufometer.web.api.rest.importer;
 
 import com.google.common.base.Preconditions;
-import com.google.common.base.Splitter;
 import com.google.common.base.Stopwatch;
 import com.google.common.collect.Lists;
 import com.google.common.collect.Maps;
 import com.sun.jersey.api.view.Viewable;
-import de.tp82.laufometer.util.DateUtils;
+import de.tp82.laufometer.core.RunImporter;
+import de.tp82.laufometer.core.TickImportHelper;
+import de.tp82.laufometer.model.run.Run;
 import de.tp82.laufometer.util.ExceptionHandling;
 import de.tp82.laufometer.web.api.rest.importer.model.ImportResult;
-import de.tp82.laufometer.core.RunImporter;
-import de.tp82.laufometer.model.Run;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import javax.ws.rs.*;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
-import java.text.DateFormat;
-import java.text.ParseException;
 import java.util.Collections;
 import java.util.Date;
 import java.util.List;
@@ -31,7 +28,6 @@ import java.util.logging.Logger;
  * @author Thorsten Platz
  */
 @Service
-@Path(value="/import")
 @Produces(MediaType.APPLICATION_JSON)
 public class ImportResource {
 	private static final Logger LOG = Logger.getLogger(ImportResource.class.getName());
@@ -46,29 +42,15 @@ public class ImportResource {
 		Stopwatch importDuration = new Stopwatch();
 		importDuration.start();
 
-		Iterable<String> tickStrings = Splitter
-				.onPattern("\r?\n")
-				.trimResults()
-				.omitEmptyStrings()
-				.split(multipleTickStrings);
-
-		List<Date> ticks = Lists.newArrayList();
-		DateFormat dateFormatter = DateUtils.IMPORT_FORMAT;
+		List<Date> ticks = Collections.emptyList();
+		List<Run> importedRuns = Collections.emptyList();
 
 		List<String> errors = Lists.newArrayList();
-		for(String tickString : tickStrings) {
-			try {
-				Date tick = dateFormatter.parse(tickString);
-				ticks.add(tick);
-			} catch (ParseException e) {
-				String error = "Error while converting string into date: " + e;
-				errors.add(error);
-			}
-		}
-
-		List<Run> importedRuns = Collections.emptyList();
 		try {
+			ticks = TickImportHelper.extractTicks(multipleTickStrings);
 			importedRuns = runImporter.importTicksAsRuns(ticks, skipKnownTicks);
+		} catch(TickImportHelper.TickImportException exc) {
+			errors.addAll(exc.getErrors());
 		} catch (Exception exc) {
 			if(LOG.isLoggable(Level.WARNING)) {
 				String stacktrace = ExceptionHandling.getStacktrace(exc);
@@ -82,7 +64,7 @@ public class ImportResource {
 	}
 
 	@POST
-	@Path(value = "/ticks")
+	@Path(value = "/rest/import/ticks")
 	@Consumes(MediaType.APPLICATION_FORM_URLENCODED)
 	@Produces(MediaType.APPLICATION_JSON)
 	public Response importTicks(@FormParam(value = "ticks") String multipleTickStrings,
@@ -95,7 +77,7 @@ public class ImportResource {
 	}
 
 	@POST
-	@Path(value = "/ticks")
+	@Path(value = "/web/import/ticks")
 	@Consumes(MediaType.APPLICATION_FORM_URLENCODED)
 	@Produces(MediaType.TEXT_HTML)
 	public Response importTicksForHtmlView(@FormParam(value = "ticks") String multipleTickStrings,
