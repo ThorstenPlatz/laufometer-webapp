@@ -3,13 +3,15 @@
 <%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
 <%@ taglib prefix="fn" uri="http://java.sun.com/jsp/jstl/functions" %>
 
+<c:set var="prefix" value="${pageContext.request.contextPath}"/>
+
 <!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN"
 "http://www.w3.org/TR/html4/loose.dtd">
 <html>
 <head>
     <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
     <title>laufometer</title>
-    <link href="/bootstrap/css/bootstrap.min.css" rel="stylesheet" media="screen">
+    <link href="${prefix}/bootstrap/css/bootstrap.min.css" rel="stylesheet" media="screen">
 </head>
 <body>
 <div class="container">
@@ -17,24 +19,30 @@
     <h2>Menu</h2>
     <ul>
         <li>
-            <h3>ticks</h3>
+            <h3>runs</h3>
             <ul>
-                <li><a href="/web/tick">list all ticks</a></li>
-                <li><a href="/web/tick/upload">upload ticks</a></li>
+                <li><a href="${prefix}/web/run/">list all runs</a></li>
             </ul>
         </li>
         <li>
             <h3>watchdogs</h3>
             <ul>
-                <li><a href="/web/watchdog/">list watchdogs</a></li>
-                <li><a href="/web/watchdog/create">create watchdog</a></li>
-                <li><a href="/web/watchdog/delete">delete watchdog</a></li>
+                <li><a href="${prefix}/web/watchdog/">list watchdogs</a></li>
+                <li><a href="${prefix}/web/watchdog/create">create watchdog</a></li>
+                <li><a href="${prefix}/web/watchdog/delete">delete watchdog</a></li>
+            </ul>
+        </li>
+        <li>
+            <h3>ticks</h3>
+            <ul>
+                <li><a href="${prefix}/web/tick">list all ticks</a></li>
+                <li><a href="${prefix}/web/tick/upload">upload ticks</a></li>
             </ul>
         </li>
         <li>
             <hr/>
             <ul>
-                <li><a href="/about.html">about</a></li>
+                <li><a href="${prefix}/about.html">about</a></li>
             </ul>
         </li>
     </ul>

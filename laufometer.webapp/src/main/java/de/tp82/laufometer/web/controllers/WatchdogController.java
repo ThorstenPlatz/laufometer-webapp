@@ -95,12 +95,15 @@ public class WatchdogController {
 
 	@RequestMapping(value="edit/{clientId}", method = RequestMethod.POST)
 	public String editWatchdogAction(ModelMap model,
-	                                 @PathVariable(value = "clientId") String clientId,
-	                                 @RequestParam(value = "recipient") String recipient) {
+	                                 @PathVariable("clientId") String clientId,
+	                                 @RequestParam("recipient") String recipient,
+	                                 @RequestParam(value="notificationEnabled", required = false, defaultValue = "false")
+	                                 boolean notificationsEnabled) {
 		ActionResult result;
 		try {
 			Watchdog watchdog = watchdogDAO.getWatchdog(clientId);
 			watchdog.setNotificationRecepient(recipient);
+			watchdog.setNotificationEnabled(notificationsEnabled);
 
 			watchdogDAO.save(watchdog);
 

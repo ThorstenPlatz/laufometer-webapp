@@ -3,12 +3,16 @@
 <%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
 <%@ taglib prefix="fn" uri="http://java.sun.com/jsp/jstl/functions" %>
 
+<c:set var="prefix" value="${pageContext.request.contextPath}"/>
+
+<jsp:useBean id="result" scope="request" type="de.tp82.laufometer.web.controllers.ActionResult"/>
+
 <!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN"
     "http://www.w3.org/TR/html4/loose.dtd">
 <html>
     <head>
         <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
-        <link href="/bootstrap/css/bootstrap.min.css" rel="stylesheet" media="screen">
+        <link href="${prefix}/bootstrap/css/bootstrap.min.css" rel="stylesheet" media="screen">
         <title>Action Result</title>
     </head>
     <body>

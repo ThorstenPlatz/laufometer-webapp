@@ -13,11 +13,15 @@ public class Watchdog {
 	private String clientId;
 	private Optional<Date> lastPing;
 	private String notificationRecepient;
+	private boolean notificationEnabled;
 	private Optional<Date> lastCheck;
 	private Optional<Boolean> lastCheckResult;
 
 	private Watchdog(String clientId) {
 		this.clientId = clientId;
+
+		notificationRecepient = "";
+		notificationEnabled = true;
 
 		lastPing = Optional.absent();
 		lastCheck = Optional.absent();
@@ -38,6 +42,14 @@ public class Watchdog {
 
 	public void setNotificationRecepient(String notificationRecepient) {
 		this.notificationRecepient = notificationRecepient;
+	}
+
+	public boolean isNotificationEnabled() {
+		return notificationEnabled;
+	}
+
+	public void setNotificationEnabled(boolean notificationEnabled) {
+		this.notificationEnabled = notificationEnabled;
 	}
 
 	public void setLastPing(Optional<Date> lastPing) {
@@ -70,6 +82,7 @@ public class Watchdog {
 				"clientId='" + clientId + '\'' +
 				", lastPing=" + lastPing +
 				", notificationRecepient='" + notificationRecepient + '\'' +
+				", notificationEnabled=" + notificationEnabled +
 				", lastCheck=" + lastCheck +
 				", lastCheckResult=" + lastCheckResult +
 				'}';
@@ -89,6 +102,11 @@ public class Watchdog {
 		public WatchdogBuilder recipient(String recipient) {
 			Preconditions.checkNotNull(Strings.emptyToNull(recipient));
 			watchdog.setNotificationRecepient(recipient);
+			return this;
+		}
+
+		public WatchdogBuilder notificationsEnabled(boolean enabled) {
+			watchdog.setNotificationEnabled(enabled);
 			return this;
 		}
 

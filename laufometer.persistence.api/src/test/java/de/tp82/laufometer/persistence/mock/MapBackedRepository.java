@@ -32,6 +32,19 @@ public class MapBackedRepository implements RunDAO {
 	}
 
 	@Override
+	public Optional<Run> findOldestRun() {
+		Run oldest = null;
+		for(Run run : storage.values()) {
+			if(oldest == null)
+				oldest = run;
+			else if(run.getBegin().before(oldest.getBegin()))
+				oldest = run;
+		}
+
+		return Optional.fromNullable(oldest);
+	}
+
+	@Override
 	public void save(Set<Run> runs) {
 		for(Run run : runs) {
 			storage.put(run.getId(), run);

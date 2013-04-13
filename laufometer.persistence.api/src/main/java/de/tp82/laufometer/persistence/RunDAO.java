@@ -22,6 +22,13 @@ public interface RunDAO {
 	 Optional<Run> findLatestRun();
 
 	/**
+	 * Finds the oldest run in the data repository.
+	 *
+	 * @return the oldest run if at least one run was already stored in the data repository
+	 */
+	Optional<Run> findOldestRun();
+
+	/**
 	 * Stores the given Runs in the data repository. Store multiple runs at once if possible,
 	 * to increase performance.
 	 *

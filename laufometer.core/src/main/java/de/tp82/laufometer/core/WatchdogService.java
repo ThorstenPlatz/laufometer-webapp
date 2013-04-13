@@ -76,6 +76,8 @@ public class WatchdogService {
 	private Watchdog performCheck(Watchdog watchdog, DateTime checkTime) {
 		DateTime pingDeadline = checkTime.minus(getPingInterval());
 
+		boolean wasAlive = watchdog.isAlive();
+
 		boolean isAlive;
 		if(watchdog.getLastPing().isPresent()) {
 			DateTime lastPing = new DateTime(watchdog.getLastPing().get());
@@ -89,8 +91,10 @@ public class WatchdogService {
 
 		watchdogRepository.save(watchdog);
 
-		if(!isAlive)
-			sendNotification(watchdog, pingDeadline.toDate());
+		if(!isAlive && wasAlive)
+			notify(watchdog, pingDeadline.toDate(), getMessage(watchdog));
+		if(isAlive && !wasAlive)
+			notify(watchdog, checkTime.toDate(), getMessage(watchdog));
 
 		if(LOG.isLoggable(Level.FINER)) {
 			LOG.finer("Checked watchdog: " + watchdog);
@@ -130,7 +134,10 @@ public class WatchdogService {
 		return recipients;
 	}
 
-	private void sendNotification(Watchdog watchdog, Date pingDeadline) {
+	private void notify(Watchdog watchdog, Date pingDeadline, MessageContent content) {
+		if(!watchdog.isNotificationEnabled())
+			return;
+
 		Set<InternetAddress> recipients = getRecipients(watchdog);
 		if(recipients.isEmpty())
 			return;
@@ -138,16 +145,8 @@ public class WatchdogService {
 		Properties props = new Properties();
 		Session session = Session.getDefaultInstance(props, null);
 
-		String msgSubject = "Missing Keepalive for " + watchdog.getClientId();
-		String lastKeepalive = "";
-		if(watchdog.getLastPing().isPresent())
-			lastKeepalive = "Last keepalive ping is from "
-					+ DateUtils.ISO_8601_FORMAT.format(watchdog.getLastPing().get());
-		else
-			lastKeepalive = "Never received a keepalive ping.";
-		String msgBody = lastKeepalive + ".\n"
-				+ "Ping deadline was: " + DateUtils.ISO_8601_FORMAT.format(pingDeadline) + ".\n"
-				+ "Checking for keepalive pings every " + getPingInterval() + " seconds.";
+		String msgSubject = content.getSubject();
+		String msgBody = content.getBody();
 
 		try {
 			Message msg = new MimeMessage(session);
@@ -162,6 +161,36 @@ public class WatchdogService {
 			if(LOG.isLoggable(Level.WARNING)) {
 				LOG.warning("Error during sending of notification for Watchdog " + watchdog);
 			}
+		}
+	}
+
+	private MessageContent getMessage(Watchdog watchdog) {
+		return new MessageContent(watchdog);
+	}
+
+	private class MessageContent {
+		private Watchdog watchdog;
+
+		public MessageContent(Watchdog watchdog) {
+			this.watchdog = watchdog;
+		}
+
+		private String getSubject() {
+			if(watchdog.isAlive())
+				return "Laufometer: " + watchdog.getClientId() + " recovered";
+			else
+				return "Laufometer: Missing Keepalive for " + watchdog.getClientId();
+		}
+
+		private String getBody() {
+			String lastKeepalive = "";
+			if(watchdog.getLastPing().isPresent())
+				lastKeepalive = "Last keepalive ping is from "
+						+ DateUtils.ISO_8601_FORMAT.format(watchdog.getLastPing().get());
+			else
+				lastKeepalive = "Never received a keepalive ping.";
+			return lastKeepalive + ".\n"
+					+ "Checking for keepalive pings every " + getPingInterval() + " seconds.";
 		}
 	}
 }

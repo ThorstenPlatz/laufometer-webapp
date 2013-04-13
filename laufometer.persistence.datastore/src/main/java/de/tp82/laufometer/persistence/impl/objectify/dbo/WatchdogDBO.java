@@ -20,15 +20,18 @@ public class WatchdogDBO {
 	private Date lastPing;
 	private Date lastCheck;
 	private Boolean lastCheckResult;
+	private boolean notificiationEnabled;
 
 	private WatchdogDBO() {
 	}
 
-	private WatchdogDBO(String key, String recipient,
-	                   Date lastPing,
-	                   Date lastCheck, Boolean lastCheckResult) {
+	private WatchdogDBO(String key,
+	                    String recipient, boolean notificiationEnabled,
+	                    Date lastPing,
+	                    Date lastCheck, Boolean lastCheckResult) {
 		this.key = key;
 		this.recipient = recipient;
+		this.notificiationEnabled = notificiationEnabled;
 		this.lastPing = lastPing;
 		this.lastCheck = lastCheck;
 		this.lastCheckResult = lastCheckResult;
@@ -40,6 +43,10 @@ public class WatchdogDBO {
 
 	public String getRecipient() {
 		return recipient;
+	}
+
+	public boolean isNotificiationEnabled() {
+		return notificiationEnabled;
 	}
 
 	public Date getLastPing() {
@@ -60,6 +67,7 @@ public class WatchdogDBO {
 		return Watchdog.WatchdogBuilder
 				.createFor(dbo.getKey())
 				.recipient(dbo.getRecipient())
+				.notificationsEnabled(dbo.isNotificiationEnabled())
 				.lastPing(dbo.getLastPing())
 				.lastCheck(dbo.getLastCheck())
 				.lastCheckResult(dbo.getLastCheckResult())
@@ -78,8 +86,11 @@ public class WatchdogDBO {
 	public static WatchdogDBO from(Watchdog watchdog) {
 		Preconditions.checkNotNull(watchdog);
 
-		return new WatchdogDBO(watchdog.getClientId(), watchdog.getNotificationRecepient(),
+		return new WatchdogDBO(watchdog.getClientId(),
+				watchdog.getNotificationRecepient(),
+				watchdog.isNotificationEnabled(),
 				watchdog.getLastPing().orNull(),
-				watchdog.getLastCheck().orNull(), watchdog.getLastCheckResult().orNull());
+				watchdog.getLastCheck().orNull(),
+				watchdog.getLastCheckResult().orNull());
 	}
 }

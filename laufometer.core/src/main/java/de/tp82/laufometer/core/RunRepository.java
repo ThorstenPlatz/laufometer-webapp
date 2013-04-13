@@ -19,6 +19,10 @@ public class RunRepository {
 	@Autowired
 	private RunDAO db;
 
+	public Optional<Run> findOldestRun() {
+		return db.findOldestRun();
+	}
+
 	public Optional<Run> findLatestRun() {
 		return db.findLatestRun();
 	}
