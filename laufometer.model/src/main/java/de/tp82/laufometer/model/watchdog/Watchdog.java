@@ -60,6 +60,10 @@ public class Watchdog {
 		this.lastCheckResult = lastCheckResult;
 	}
 
+	public boolean isAlive() {
+		return lastCheckResult.isPresent() ? lastCheckResult.get() : false;
+	}
+
 	@Override
 	public String toString() {
 		return "Watchdog{" +

@@ -42,6 +42,7 @@
           <element id="library" level="project" name="Maven: com.fasterxml.jackson.core:jackson-core:2.0.6" />
           <element id="library" level="project" name="Maven: com.google.appengine:appengine-api-labs:1.7.2" />
           <element id="library" level="project" name="Maven: jstl:jstl:1.2" />
+          <element id="library" level="project" name="Maven: javax.servlet:jsp-api:2.0" />
           <element id="library" level="project" name="Maven: org.springframework:spring-web:3.0.1.RELEASE" />
           <element id="library" level="project" name="Maven: org.springframework:spring-webmvc:3.0.1.RELEASE" />
           <element id="library" level="project" name="Maven: com.sun.jersey:jersey-server:1.12" />

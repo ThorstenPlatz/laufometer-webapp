@@ -49,7 +49,6 @@ public class WatchdogController {
 					.recipient(recipient)
 					.build();
 
-
 			try {
 				watchdogDAO.getWatchdog(clientId);
 				throw new IllegalArgumentException("Watchdog with clientId='" + clientId + "' already exists!");

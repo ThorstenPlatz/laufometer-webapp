@@ -19,8 +19,10 @@ public class ImportResult {
 	public ImportResult(List<Run> runs, List<Date> ticks, long duration, List<String> errors) {
 		numberOfImportedRuns = runs.size();
 		numberOfImportedTicks = ticks.size();
-		importTimeFrameBegin = ticks.get(0);
-		importTimeFrameEnd = ticks.get(ticks.size()-1);
+		if(!ticks.isEmpty()) {
+			importTimeFrameBegin = ticks.get(0);
+			importTimeFrameEnd = ticks.get(ticks.size()-1);
+		}
 		importDuration = duration;
 		this.errors = errors;
 	}

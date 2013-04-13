@@ -31,6 +31,12 @@
                 <li><a href="/web/watchdog/delete">delete watchdog</a></li>
             </ul>
         </li>
+        <li>
+            <hr/>
+            <ul>
+                <li><a href="/about.html">about</a></li>
+            </ul>
+        </li>
     </ul>
 </div> <!-- container -->
 </body>

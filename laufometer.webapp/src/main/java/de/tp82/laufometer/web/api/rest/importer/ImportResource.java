@@ -1,11 +1,11 @@
 package de.tp82.laufometer.web.api.rest.importer;
 
+import com.google.common.base.Optional;
 import com.google.common.base.Preconditions;
 import com.google.common.base.Stopwatch;
 import com.google.common.collect.Lists;
-import com.google.common.collect.Maps;
-import com.sun.jersey.api.view.Viewable;
 import de.tp82.laufometer.core.RunImporter;
+import de.tp82.laufometer.core.RunRepository;
 import de.tp82.laufometer.core.TickImportHelper;
 import de.tp82.laufometer.model.run.Run;
 import de.tp82.laufometer.util.ExceptionHandling;
@@ -16,10 +16,10 @@ import org.springframework.stereotype.Service;
 import javax.ws.rs.*;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
+import java.util.Calendar;
 import java.util.Collections;
 import java.util.Date;
 import java.util.List;
-import java.util.Map;
 import java.util.concurrent.TimeUnit;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -28,9 +28,12 @@ import java.util.logging.Logger;
  * @author Thorsten Platz
  */
 @Service
-@Produces(MediaType.APPLICATION_JSON)
+@Path("/{audience}/tick")
 public class ImportResource {
 	private static final Logger LOG = Logger.getLogger(ImportResource.class.getName());
+
+	@Autowired
+	private RunRepository runRepository;
 
 	@Autowired
 	private RunImporter runImporter;
@@ -64,11 +67,12 @@ public class ImportResource {
 	}
 
 	@POST
-	@Path(value = "/rest/import/ticks")
+	@Path("/import/{clientId}")
 	@Consumes(MediaType.APPLICATION_FORM_URLENCODED)
 	@Produces(MediaType.APPLICATION_JSON)
-	public Response importTicks(@FormParam(value = "ticks") String multipleTickStrings,
-	                            @QueryParam(value="skipKnownTicks") @DefaultValue(value = "true") boolean skipKnownTicks) {
+	public Response importTicks(@FormParam("ticks") String multipleTickStrings,
+	                            @PathParam("clientId")
+	                            @QueryParam("skipKnownTicks") @DefaultValue(value = "true") boolean skipKnownTicks) {
 		ImportResult result = importTicksInternal(multipleTickStrings, skipKnownTicks);
 		if(result.getErrors().isEmpty())
 			return Response.ok().entity(result).build();
@@ -76,23 +80,20 @@ public class ImportResource {
 			return Response.status(Response.Status.BAD_REQUEST).entity(result).build();
 	}
 
-	@POST
-	@Path(value = "/web/import/ticks")
-	@Consumes(MediaType.APPLICATION_FORM_URLENCODED)
-	@Produces(MediaType.TEXT_HTML)
-	public Response importTicksForHtmlView(@FormParam(value = "ticks") String multipleTickStrings,
-	                                       @QueryParam(value="skipKnownTicks") @DefaultValue(value = "true") boolean skipKnownTicks) {
-		ImportResult result = importTicksInternal(multipleTickStrings, skipKnownTicks);
 
-		Map<String, Object> model = Maps.newHashMap();
-		model.put("result", result);
+	@GET
+	@Path("/list")
+	public Response getAllTicks() {
+		Calendar aLongTimeAgo = Calendar.getInstance();
+		aLongTimeAgo.set(2000, Calendar.JANUARY, 1);
+		List<Run> runs = runRepository.findRuns(aLongTimeAgo.getTime(), Optional.<Date>absent());
 
-		Viewable resultView = new Viewable("/views/uploadedTicks", model);
+		List<Date> ticks = Lists.newArrayList();
+		for(Run run : runs)
+			ticks.addAll(run.getTicks());
 
-		if(result.getErrors().isEmpty())
-			return Response.ok(resultView).build();
-		else
-			return Response.status(Response.Status.BAD_REQUEST).entity(resultView).build();
+		Collections.sort(ticks);
 
+		return Response.ok(ticks).build();
 	}
 }

@@ -20,7 +20,7 @@
                 <label class="control-label" for="clientId">ClientId</label>
                 <div class="controls">
                     <input type="text" id="clientId" name="clientId"
-                           placeholder="clientId should not contain special characters">
+                           placeholder="should not contain special characters">
                 </div>
             </div>
             <div class="control-group">

@@ -29,7 +29,7 @@
                 <c:choose>
                     <c:when test="${watchdog.lastCheckResult.present}">
                         <c:choose>
-                            <c:when test="${watchdog.lastCheckResult}">
+                            <c:when test="${watchdog.alive}">
                                 <c:set var="rowCss" value="success"/>
                                 <c:set var="statusMsg" value="ok"/>
                             </c:when>
@@ -52,7 +52,7 @@
                     <td>
                         <c:out value="${watchdog.notificationRecepient}"/>
                     </td>
-                    <td>
+                    <td title="<c:out value="${watchdog}"/>">
                         <c:out value="${statusMsg}"/>
                     </td>
                     <td>

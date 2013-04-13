@@ -17,6 +17,7 @@ import java.util.Collections;
 import java.util.Date;
 import java.util.Iterator;
 import java.util.List;
+import java.util.concurrent.TimeUnit;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
@@ -63,18 +64,27 @@ public class RunImporter {
 		if(LOG.isLoggable(Level.INFO))
 			LOG.info("Importing " + ticks.size() + " ticks...");
 
+		// filter out ticks from the past
 		if(skipKnownTicks)
 			skipKnownTicks(ticks);
-		List<Run> runs = detectRuns(ticks);
 
-		runRepository.store(Sets.newHashSet(runs));
+		List<Run> runs;
+		if(ticks.isEmpty())
+			runs = Collections.emptyList();
+		else
+			runs = detectRuns(ticks);
+
+		if(!runs.isEmpty())
+			runRepository.store(Sets.newHashSet(runs));
+
+		runs = Collections.unmodifiableList(runs);
 
 		importDuration.stop();
 
 		if(LOG.isLoggable(Level.INFO))
-			LOG.info("Imported " + runs.size() + " runs in " + importDuration.toString() + ".");
+			LOG.info("Imported " + runs.size() + " runs in " + importDuration.elapsed(TimeUnit.SECONDS) + " seconds.");
 
-		return Collections.unmodifiableList(runs);
+		return runs;
 
 	}
 
@@ -96,11 +106,11 @@ public class RunImporter {
 				else
 					break;
 			}
-			if(LOG.isLoggable(Level.FINE))
-				LOG.fine("Skipped " + (ticks.size() - initialTicks) + " ticks before latest run: " + latestRun);
+			if(LOG.isLoggable(Level.INFO))
+				LOG.info("Skipped " + (initialTicks - ticks.size()) + " ticks before latest run: " + latestRun.get());
 		} else {
-			if(LOG.isLoggable(Level.FINE))
-				LOG.fine("No previous run exists in the repository.");
+			if(LOG.isLoggable(Level.INFO))
+				LOG.info("No previous run exists in the repository.");
 		}
 	}
 
@@ -111,19 +121,26 @@ public class RunImporter {
 		Duration maxTickDistance = new Duration(maxTickDistanceMillis);
 
 		DateTime runBegin = new DateTime(ticks.get(0));
+		DateTime latestNextTick = runBegin.plus(maxTickDistance);
 		List<Date> runTicks = Lists.newArrayList();
 		for(Date tick : ticks) {
-
 			DateTime tickTime = new DateTime(tick);
-			DateTime latestNextTick = runBegin.plus(maxTickDistance);
 
-			if(tickTime.isBefore(latestNextTick))
+			if(tickTime.isBefore(latestNextTick)) {
 				runTicks.add(tick);
-			else {
-				Run run = createRun(runTicks);
-				runs.add(run);
+				latestNextTick = tickTime.plus(maxTickDistance);
+			} else {
+				if(!runTicks.isEmpty()) {
+					Run run = createRun(runTicks);
+					runs.add(run);
+				} else {
+					// Nothing to do here
+					LOG.warning("");
+				}
 
+				// reset to collect a new run
 				runBegin = tickTime;
+				latestNextTick = runBegin.plus(maxTickDistance);
 				runTicks = Lists.newArrayList();
 			}
 		}
