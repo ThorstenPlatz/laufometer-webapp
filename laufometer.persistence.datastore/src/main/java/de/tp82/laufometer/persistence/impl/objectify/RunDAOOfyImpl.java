@@ -1,11 +1,13 @@
 package de.tp82.laufometer.persistence.impl.objectify;
 
 import com.google.common.base.Optional;
+import com.google.common.base.Preconditions;
 import com.google.common.collect.Lists;
 import com.google.common.collect.Sets;
 import com.googlecode.objectify.Key;
 import com.googlecode.objectify.cmd.Query;
 import de.tp82.laufometer.model.run.Run;
+import de.tp82.laufometer.model.run.SingleRun;
 import de.tp82.laufometer.persistence.EntityNotFoundException;
 import de.tp82.laufometer.persistence.RunDAO;
 import de.tp82.laufometer.persistence.impl.objectify.dbo.RunDBO;
@@ -24,7 +26,7 @@ public class RunDAOOfyImpl implements RunDAO {
 	private static final Logger LOG = Logger.getLogger(RunDAOOfyImpl.class.getName());
 
 	@Override
-	public Optional<Run> findLatestRun() {
+	public Optional<SingleRun> findLatestRun() {
 		List<RunDBO> runs = ofy().load().type(RunDBO.class).limit(1).order("-begin").list();
 
 		if(runs.isEmpty())
@@ -34,7 +36,7 @@ public class RunDAOOfyImpl implements RunDAO {
 	}
 
 	@Override
-	public Optional<Run> findOldestRun() {
+	public Optional<SingleRun> findOldestRun() {
 		List<RunDBO> runs = ofy().load().type(RunDBO.class).limit(1).order("begin").list();
 
 		if(runs.isEmpty())
@@ -44,7 +46,7 @@ public class RunDAOOfyImpl implements RunDAO {
 	}
 
 	@Override
-	public void save(Set<Run> runs) {
+	public void save(Set<SingleRun> runs) {
 		if(LOG.isLoggable(Level.INFO))
 			LOG.info("Storing runs: " + runs);
 
@@ -53,7 +55,7 @@ public class RunDAOOfyImpl implements RunDAO {
 	}
 
 	@Override
-	public Run getRun(String runId) {
+	public SingleRun getRun(String runId) {
 		RunDBO dbo = ofy().load().type(RunDBO.class).id(runId).get();
 		if(dbo == null)
 			throw new EntityNotFoundException(runId);
@@ -62,18 +64,20 @@ public class RunDAOOfyImpl implements RunDAO {
 	}
 
 	@Override
-	public List<Run> findRuns(Date from, Date to) {
+	public List<SingleRun> findRuns(Date from, Date to) {
 
 		// find runs that begin in the given interval
-		Query<RunDBO> beginningRuns = ofy().load().type(RunDBO.class);
-		beginningRuns.filter("begin >= ", from);
-		beginningRuns.filter("begin <= ", to);
+		Query<RunDBO> beginningRuns = ofy().load()
+				.type(RunDBO.class)
+				.filter("begin >= ", from)
+				.filter("begin <= ", to);
 		Set<Key<RunDBO>> beginningRunKeys = Sets.newHashSet(beginningRuns.keys());
 
 		// find runs that end in the given interval
-		Query<RunDBO> endingRuns = ofy().load().type(RunDBO.class);
-		endingRuns.filter("end >= ", from);
-		endingRuns.filter("end <= ", to);
+		Query<RunDBO> endingRuns = ofy().load()
+				.type(RunDBO.class)
+				.filter("end >= ", from)
+				.filter("end <= ", to);
 		Set<Key<RunDBO>> endingRunKeys = Sets.newHashSet(endingRuns.keys());
 
 		// combine beginning and ending runs and eliminate duplicates
@@ -82,9 +86,15 @@ public class RunDAOOfyImpl implements RunDAO {
 
 		// load and return entities for the previous filtered keys
 		Map<Key<RunDBO>, RunDBO> results = ofy().load().keys(keys);
-		List<Run> runs = Lists.newArrayList(RunDBO.toRuns(results.values()));
+		List<SingleRun> runs = Lists.newArrayList(RunDBO.toRuns(results.values()));
 
-		Collections.sort(runs, new Run.RunBeginComparator());
+		Collections.sort(runs, new SingleRun.RunBeginComparator());
+
+		for(Run run : runs) {
+			Preconditions.checkArgument(!run.getEnd().before(from));
+			Preconditions.checkArgument(!run.getBegin().after(to) );
+		}
+
 		return runs;
 	}
 }

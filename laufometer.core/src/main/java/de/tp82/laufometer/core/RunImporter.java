@@ -4,7 +4,7 @@ import com.google.common.collect.Sets;
 import com.google.common.base.Optional;
 import com.google.common.base.Stopwatch;
 import com.google.common.collect.Lists;
-import de.tp82.laufometer.model.run.Run;
+import de.tp82.laufometer.model.run.SingleRun;
 import de.tp82.laufometer.model.run.RunTickProvider;
 import org.joda.time.DateTime;
 import org.joda.time.Duration;
@@ -57,18 +57,20 @@ public class RunImporter {
 					+ "- maxTickInterval=" + maxTickInterval);
 	}
 
-	public List<Run> importTicksAsRuns(List<Date> ticks, boolean skipKnownTicks) {
+	public List<SingleRun> importTicksAsRuns(List<Date> ticks, boolean skipKnownTicks) {
 		Stopwatch importDuration = new Stopwatch();
 		importDuration.start();
 
 		if(LOG.isLoggable(Level.INFO))
 			LOG.info("Importing " + ticks.size() + " ticks...");
 
+		preprocess(ticks);
+
 		// filter out ticks from the past
 		if(skipKnownTicks)
 			skipKnownTicks(ticks);
 
-		List<Run> runs;
+		List<SingleRun> runs;
 		if(ticks.isEmpty())
 			runs = Collections.emptyList();
 		else
@@ -88,13 +90,17 @@ public class RunImporter {
 
 	}
 
+	private void preprocess(List<Date> ticks) {
+		Collections.sort(ticks);
+	}
+
 	/**
 	 * Remove ticks from the beginning of the list if they are older than the beginning of the
 	 * last known run. Then they are already imported.
 	 * @param ticks ticks to import
 	 */
 	private void skipKnownTicks(List<Date> ticks) {
-		Optional<Run> latestRun = runRepository.findLatestRun();
+		Optional<SingleRun> latestRun = runRepository.findLatestRun();
 		if(latestRun.isPresent()) {
 			int initialTicks = ticks.size();
 
@@ -114,8 +120,10 @@ public class RunImporter {
 		}
 	}
 
-	private List<Run> detectRuns(List<Date> ticks) {
-		List<Run> runs = Lists.newArrayList();
+	public List<SingleRun> detectRuns(List<Date> ticks) {
+		preprocess(ticks);
+
+		List<SingleRun> runs = Lists.newArrayList();
 
 		long maxTickDistanceMillis = Math.round(maxTickInterval * 1000);
 		Duration maxTickDistance = new Duration(maxTickDistanceMillis);
@@ -131,7 +139,7 @@ public class RunImporter {
 				latestNextTick = tickTime.plus(maxTickDistance);
 			} else {
 				if(!runTicks.isEmpty()) {
-					Run run = createRun(runTicks);
+					SingleRun run = createRun(runTicks);
 					runs.add(run);
 				} else {
 					// Nothing to do here
@@ -145,15 +153,15 @@ public class RunImporter {
 			}
 		}
 		if(!runTicks.isEmpty()) {
-			Run run = createRun(runTicks);
+			SingleRun run = createRun(runTicks);
 			runs.add(run);
 		}
 
 		return runs;
 	}
 
-	private Run createRun(List<Date> runTicks) {
-		Run run = Run.fromRunTicks(new RunTickContainer(runTicks));
+	private SingleRun createRun(List<Date> runTicks) {
+		SingleRun run = SingleRun.fromRunTicks(new RunTickContainer(runTicks));
 
 		if(LOG.isLoggable(Level.INFO))
 			LOG.info("Detected run: " + run);

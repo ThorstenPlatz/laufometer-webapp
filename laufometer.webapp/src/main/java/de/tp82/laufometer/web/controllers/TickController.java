@@ -5,7 +5,7 @@ import com.google.common.collect.Lists;
 import de.tp82.laufometer.core.RunImporter;
 import de.tp82.laufometer.core.RunRepository;
 import de.tp82.laufometer.core.TickImportHelper;
-import de.tp82.laufometer.model.run.Run;
+import de.tp82.laufometer.model.run.SingleRun;
 import de.tp82.laufometer.util.ExceptionHandling;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -50,7 +50,7 @@ public class TickController {
 			if(ticksText != null)
 				ticks = TickImportHelper.extractTicks(ticksText);
 
-			List<Run> importedRuns = runImporter.importTicksAsRuns(ticks, true);
+			List<SingleRun> importedRuns = runImporter.importTicksAsRuns(ticks, true);
 
 			result = ActionResult
 					.success("Imported " + importedRuns.size() + " runs.")
@@ -80,10 +80,10 @@ public class TickController {
 
 		Calendar aLongTimeAgo = Calendar.getInstance();
 		aLongTimeAgo.set(2000, Calendar.JANUARY, 1);
-		List<Run> runs = runRepository.findRuns(aLongTimeAgo.getTime(), Optional.<Date>absent());
+		List<SingleRun> runs = runRepository.findRuns(aLongTimeAgo.getTime(), Optional.<Date>absent());
 
 		List<Date> ticks = Lists.newArrayList();
-		for(Run run : runs)
+		for(SingleRun run : runs)
 			ticks.addAll(run.getTicks());
 
 		Collections.sort(ticks);

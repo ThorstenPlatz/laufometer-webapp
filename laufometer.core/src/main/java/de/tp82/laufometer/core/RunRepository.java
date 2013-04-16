@@ -2,8 +2,8 @@ package de.tp82.laufometer.core;
 
 import com.google.common.base.Optional;
 import com.google.common.base.Preconditions;
+import de.tp82.laufometer.model.run.SingleRun;
 import de.tp82.laufometer.persistence.RunDAO;
-import de.tp82.laufometer.model.run.Run;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -19,15 +19,15 @@ public class RunRepository {
 	@Autowired
 	private RunDAO db;
 
-	public Optional<Run> findOldestRun() {
+	public Optional<SingleRun> findOldestRun() {
 		return db.findOldestRun();
 	}
 
-	public Optional<Run> findLatestRun() {
+	public Optional<SingleRun> findLatestRun() {
 		return db.findLatestRun();
 	}
 
-	public List<Run> findRuns(Date from, Optional<Date> to) {
+	public List<SingleRun> findRuns(Date from, Optional<Date> to) {
 		Preconditions.checkNotNull(from);
 		Preconditions.checkNotNull(to);
 
@@ -37,7 +37,7 @@ public class RunRepository {
 		return db.findRuns(from, until);
 	}
 
-	public void store(Set<Run> runs) {
+	public void store(Set<SingleRun> runs) {
 		db.save(runs);
 	}
 

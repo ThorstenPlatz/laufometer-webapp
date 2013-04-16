@@ -7,7 +7,7 @@ import com.google.common.collect.Lists;
 import com.googlecode.objectify.annotation.Entity;
 import com.googlecode.objectify.annotation.Id;
 import com.googlecode.objectify.annotation.Index;
-import de.tp82.laufometer.model.run.Run;
+import de.tp82.laufometer.model.run.SingleRun;
 import de.tp82.laufometer.model.run.RunTickProvider;
 
 import java.util.Collections;
@@ -66,28 +66,28 @@ public class RunDBO implements RunTickProvider {
 		return Collections.unmodifiableList(ticks);
 	}
 
-	public static RunDBO from(Run run) {
+	public static RunDBO from(SingleRun run) {
 		Preconditions.checkNotNull(run);
 
 		RunDBO dbo = new RunDBO(run.getId(), run);
 		return dbo;
 	}
 
-	public static Iterable<RunDBO> from(Iterable<Run> runs) {
+	public static Iterable<RunDBO> from(Iterable<SingleRun> runs) {
 		Set<RunDBO> dbos = Sets.newHashSet();
-		for(Run run : runs)
+		for(SingleRun run : runs)
 			dbos.add(from(run));
 		return dbos;
 	}
 
-	public static Run toRun(RunDBO dbo) {
-		Run run = Run.fromRunTicks(dbo);
+	public static SingleRun toRun(RunDBO dbo) {
+		SingleRun run = SingleRun.fromRunTicks(dbo);
 		assert run.getId().equals(dbo.getKey());
 		return run;
 	}
 
-	public static Iterable<Run> toRuns(Iterable<RunDBO> dbos) {
-		List<Run> runs = Lists.newArrayList();
+	public static Iterable<SingleRun> toRuns(Iterable<RunDBO> dbos) {
+		List<SingleRun> runs = Lists.newArrayList();
 		for(RunDBO dbo : dbos)
 			runs.add(toRun(dbo));
 		return runs;

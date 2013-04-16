@@ -19,26 +19,26 @@ import java.util.logging.Logger;
  * @author Thorsten Platz
  */
 @Controller
-@RequestMapping(value = "/watchdog/")
+@RequestMapping(value = "/watchdog")
 public class WatchdogController {
 	private static final Logger LOG = Logger.getLogger(WatchdogController.class.getName());
 
 	@Autowired
 	private WatchdogDAO watchdogDAO;
 
-	@RequestMapping(value="")
+	@RequestMapping("/")
 	public String indexWatchdogs(ModelMap model) {
 		List<Watchdog> watchdogs = Lists.newArrayList(watchdogDAO.findAllWatchdogs());
 		model.put("watchdogs", watchdogs);
 		return "watchdog/listWatchdogs";
 	}
 
-	@RequestMapping(value="create", method = RequestMethod.GET)
+	@RequestMapping(value="/create", method = RequestMethod.GET)
 	public String createWatchdogForm() {
 		return "watchdog/createWatchdog";
 	}
 
-	@RequestMapping(value="create", method = RequestMethod.POST)
+	@RequestMapping(value="/create", method = RequestMethod.POST)
 	public String createWatchdogAction(ModelMap model,
 	                                   @RequestParam(value = "clientId") String clientId,
 	                                   @RequestParam(value = "recipient") String recipient) {
@@ -73,7 +73,7 @@ public class WatchdogController {
 		return "generic/actionResult";
 	}
 
-	@RequestMapping(value="edit/{clientId}", method = RequestMethod.GET)
+	@RequestMapping(value="/edit/{clientId}", method = RequestMethod.GET)
 	public String editWatchdogForm(ModelMap model,
 	                               @PathVariable(value = "clientId") String clientId) {
 		ActionResult result;
@@ -93,7 +93,7 @@ public class WatchdogController {
 		return "watchdog/editWatchdog";
 	}
 
-	@RequestMapping(value="edit/{clientId}", method = RequestMethod.POST)
+	@RequestMapping(value="/edit/{clientId}", method = RequestMethod.POST)
 	public String editWatchdogAction(ModelMap model,
 	                                 @PathVariable("clientId") String clientId,
 	                                 @RequestParam("recipient") String recipient,
@@ -121,7 +121,7 @@ public class WatchdogController {
 		return "generic/actionResult";
 	}
 
-	@RequestMapping(value="delete/{clientId}", method = RequestMethod.POST)
+	@RequestMapping(value="/delete/{clientId}", method = RequestMethod.POST)
 	public String deleteWatchdogAction(ModelMap model,
 	                                 @PathVariable(value = "clientId") String clientId) {
 		ActionResult result;
