@@ -11,7 +11,6 @@
     </parent>
 
     <artifactId>laufometer.model</artifactId>
-    <packaging>jar</packaging>
 
     <dependencies>
     </dependencies>
