@@ -89,6 +89,7 @@
                         week: "MMM d[ yyyy]{ '&#8212;'[ MMM] d yyyy}", // Sep 7 - 13 2009
                         day: 'dddd, d. MMM, yyyy'                  // Tuesday, 8. Sep, 2009
                     },
+                    axisFormat: "H(:mm)",
 
                     // event source
                     //events: '${prefix}/api/public/run/calendar'
