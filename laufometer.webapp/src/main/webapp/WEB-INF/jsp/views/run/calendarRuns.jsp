@@ -119,6 +119,12 @@
 
                             lastView = view.name;
                         }
+                    },
+                    loading: function(bool) {
+                        if (bool)
+                            $('#loading').show();
+                        else
+                            $('#loading').hide();
                     }
                 })
             });
@@ -126,9 +132,9 @@
     </head>
     <body>
     <div class="container">
-        <h1>Run Calendar</h1>
+        <h1>Run Calendar <img src="${prefix}/img/loader.gif" id="loading" alt="loading"/></h1>
 
-        <div id='calendar'></div>
+        <div id="calendar"></div>
 
     </div>
     </body>
