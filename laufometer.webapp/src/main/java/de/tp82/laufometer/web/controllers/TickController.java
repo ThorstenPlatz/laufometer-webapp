@@ -39,7 +39,8 @@ public class TickController {
 	@RequestMapping(value="/upload", method = RequestMethod.POST)
 	public String uploadTicksAction(ModelMap model,
 	                                @RequestParam(value="ticksFile", required = false) MultipartFile ticksFile,
-	                                @RequestParam(value="ticksText", required = false) String ticksText) {
+	                                @RequestParam(value="ticksText", required = false) String ticksText,
+	                                @RequestParam(value="skipKnownTicks", required = false, defaultValue = "true") boolean skipKnownTicks) {
 		ActionResult result;
 		try {
 			List<Date> ticks = Collections.emptyList();
@@ -50,7 +51,7 @@ public class TickController {
 			if(ticksText != null)
 				ticks = TickImportHelper.extractTicks(ticksText);
 
-			List<Run> importedRuns = runImporter.importTicksAsRuns(ticks, true);
+			List<Run> importedRuns = runImporter.importTicksAsRuns(ticks, skipKnownTicks);
 
 			result = ActionResult
 					.success("Imported " + importedRuns.size() + " runs.")

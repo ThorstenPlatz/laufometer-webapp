@@ -33,8 +33,7 @@
                 <div class="control-group">
                     <div class="controls">
                         <label class="checkbox" for="skipKnownTicks">
-                            <input type="checkbox" id="skipKnownTicks" name="skipKnownTicks"
-                                   value="false" checked="checked"/>
+                            <input type="checkbox" id="skipKnownTicks" name="skipKnownTicks" value="false"/>
                             import ticks from the past
                         </label>
                     </div>
