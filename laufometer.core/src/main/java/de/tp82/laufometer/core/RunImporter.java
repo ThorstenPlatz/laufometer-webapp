@@ -115,7 +115,7 @@ public class RunImporter {
 			Iterator<Date> itr = ticks.listIterator();
 			while(itr.hasNext()) {
 				Date tick = itr.next();
-				if(tick.before(latestRun.get().getBegin()))
+				if(tick.before(latestRun.get().getEnd()))
 					itr.remove();
 				else
 					break;
