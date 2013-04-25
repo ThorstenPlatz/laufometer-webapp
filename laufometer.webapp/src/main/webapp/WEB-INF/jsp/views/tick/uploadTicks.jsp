@@ -3,13 +3,15 @@
 <%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
 <%@ taglib prefix="fn" uri="http://java.sun.com/jsp/jstl/functions" %>
 
+<c:set var="prefix" value="${pageContext.request.contextPath}"/>
+
 <!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN"
     "http://www.w3.org/TR/html4/loose.dtd">
 <html>
     <head>
         <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
         <title>Upload Ticks</title>
-        <link href="/bootstrap/css/bootstrap.min.css" rel="stylesheet" media="screen">
+        <link href="${prefix}/lib/bootstrap/css/bootstrap.min.css" rel="stylesheet" media="screen">
     </head>
     <body>
         <div class="container">
@@ -26,6 +28,15 @@
                     <label class="control-label" for="ticksFile" class="disabled">from tick log file:</label>
                     <div class="controls">
                         <input id="ticksFile" type="file" name="ticksFile" disabled="disabled"/>
+                    </div>
+                </div>
+                <div class="control-group">
+                    <div class="controls">
+                        <label class="checkbox" for="skipKnownTicks">
+                            <input type="checkbox" id="skipKnownTicks" name="skipKnownTicks"
+                                   value="false" checked="checked"/>
+                            import ticks from the past
+                        </label>
                     </div>
                 </div>
                 <div class="control-group">

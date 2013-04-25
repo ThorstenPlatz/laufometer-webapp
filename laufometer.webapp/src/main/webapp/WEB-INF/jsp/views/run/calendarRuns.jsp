@@ -14,13 +14,20 @@
 <html>
     <head>
         <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
-        <link href="${prefix}/bootstrap/css/bootstrap.min.css" rel="stylesheet" media="screen">
+        <link href="${prefix}/lib/bootstrap/css/bootstrap.min.css" rel="stylesheet" media="screen">
 
-        <link href='${prefix}/fullcalendar/fullcalendar.css' rel='stylesheet' type='text/css'/>
-        <script type='text/javascript' src='${prefix}/jquery/jquery.js'></script>
-        <script type='text/javascript' src='${prefix}/fullcalendar/fullcalendar.js'></script>
+        <link href='${prefix}/lib/fullcalendar/fullcalendar.css' rel='stylesheet' type='text/css'/>
+        <script type='text/javascript' src='${prefix}/lib/jquery/jquery.js'></script>
+        <script type='text/javascript' src='${prefix}/lib/fullcalendar/fullcalendar.js'></script>
 
         <title>Run Calendar</title>
+
+        <style type="text/css">
+            /* don't display event start time on month view */
+            .fc-view-month .fc-event-time{
+                display : none;
+            }
+        </style>
 
         <script type="text/javascript">
             var apiBasePath = "${prefix}/api/public/run/calendar/group";
@@ -31,27 +38,21 @@
                     type: 'GET',
                     cache: true,
                     error: function() { alert('something broke with monthSource...'); },
-                    color: 'purple',
-                    textColor: 'white',
-                    className: 'monthSource'
+                    className: 'monthEvent'
                 },
                 weekSource: {
                     url: apiBasePath+'?groupInterval=7200',
                     type: 'GET',
                     cache: true,
                     error: function() { alert('something broke with weekSource...'); },
-                    color: 'black',
-                    textColor: 'white',
-                    className: 'weekSource'
+                    className: 'weekEvent'
                 },
                 daySource:  {
                     url: apiBasePath+'?groupInterval=1800',
                     type: 'GET',
                     cache: true,
                     error: function() { alert('something broke with daySource...'); },
-                    color: 'blue',
-                    textColor: 'white',
-                    className: 'daySource'
+                    className: 'dayEvent'
                 }
             };
 

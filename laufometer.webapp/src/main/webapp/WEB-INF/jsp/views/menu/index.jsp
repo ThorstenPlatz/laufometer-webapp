@@ -11,7 +11,7 @@
 <head>
     <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
     <title>laufometer</title>
-    <link href="${prefix}/bootstrap/css/bootstrap.min.css" rel="stylesheet" media="screen">
+    <link href="${prefix}/lib/bootstrap/css/bootstrap.min.css" rel="stylesheet" media="screen">
 </head>
 <body>
 <div class="container">
@@ -23,6 +23,7 @@
             <ul>
                 <li><a href="${prefix}/web/run/">list all runs</a></li>
                 <li><a href="${prefix}/web/run/calendar">run calendar</a></li>
+                <li><a href="${prefix}/web/run/administration">run administration</a></li>
             </ul>
         </li>
         <li>

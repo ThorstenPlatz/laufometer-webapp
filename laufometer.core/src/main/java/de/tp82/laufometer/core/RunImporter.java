@@ -1,11 +1,13 @@
 package de.tp82.laufometer.core;
 
-import com.google.common.collect.Sets;
 import com.google.common.base.Optional;
 import com.google.common.base.Stopwatch;
 import com.google.common.collect.Lists;
-import de.tp82.laufometer.model.run.SingleRun;
+import com.google.common.collect.Sets;
+import de.tp82.laufometer.model.run.Run;
+import de.tp82.laufometer.model.run.RunDay;
 import de.tp82.laufometer.model.run.RunTickProvider;
+import de.tp82.laufometer.model.run.SingleRun;
 import org.joda.time.DateTime;
 import org.joda.time.Duration;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -57,7 +59,7 @@ public class RunImporter {
 					+ "- maxTickInterval=" + maxTickInterval);
 	}
 
-	public List<SingleRun> importTicksAsRuns(List<Date> ticks, boolean skipKnownTicks) {
+	public List<Run> importTicksAsRuns(List<Date> ticks, boolean skipKnownTicks) {
 		Stopwatch importDuration = new Stopwatch();
 		importDuration.start();
 
@@ -70,14 +72,20 @@ public class RunImporter {
 		if(skipKnownTicks)
 			skipKnownTicks(ticks);
 
-		List<SingleRun> runs;
+		List<? extends Run> runs;
 		if(ticks.isEmpty())
 			runs = Collections.emptyList();
 		else
-			runs = detectRuns(ticks);
+			runs = RunDay.from(RunTickProvider.SimpleTickProvider.from(ticks));
 
-		if(!runs.isEmpty())
-			runRepository.store(Sets.newHashSet(runs));
+		List<Run> foundRuns;
+		if(runs.isEmpty())
+			foundRuns = Collections.emptyList();
+		else {
+			foundRuns = Lists.newArrayList();
+			foundRuns.addAll(runs);
+			runRepository.store(Sets.newHashSet(foundRuns));
+		}
 
 		runs = Collections.unmodifiableList(runs);
 
@@ -86,7 +94,7 @@ public class RunImporter {
 		if(LOG.isLoggable(Level.INFO))
 			LOG.info("Imported " + runs.size() + " runs in " + importDuration.elapsed(TimeUnit.SECONDS) + " seconds.");
 
-		return runs;
+		return foundRuns;
 
 	}
 
@@ -100,7 +108,7 @@ public class RunImporter {
 	 * @param ticks ticks to import
 	 */
 	private void skipKnownTicks(List<Date> ticks) {
-		Optional<SingleRun> latestRun = runRepository.findLatestRun();
+		Optional<Run> latestRun = runRepository.findLatestRun();
 		if(latestRun.isPresent()) {
 			int initialTicks = ticks.size();
 
@@ -141,9 +149,6 @@ public class RunImporter {
 				if(!runTicks.isEmpty()) {
 					SingleRun run = createRun(runTicks);
 					runs.add(run);
-				} else {
-					// Nothing to do here
-					LOG.warning("");
 				}
 
 				// reset to collect a new run

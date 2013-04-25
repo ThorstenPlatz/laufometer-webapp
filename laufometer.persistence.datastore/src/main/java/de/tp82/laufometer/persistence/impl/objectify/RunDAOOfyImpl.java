@@ -7,7 +7,6 @@ import com.google.common.collect.Sets;
 import com.googlecode.objectify.Key;
 import com.googlecode.objectify.cmd.Query;
 import de.tp82.laufometer.model.run.Run;
-import de.tp82.laufometer.model.run.SingleRun;
 import de.tp82.laufometer.persistence.EntityNotFoundException;
 import de.tp82.laufometer.persistence.RunDAO;
 import de.tp82.laufometer.persistence.impl.objectify.dbo.RunDBO;
@@ -26,7 +25,7 @@ public class RunDAOOfyImpl implements RunDAO {
 	private static final Logger LOG = Logger.getLogger(RunDAOOfyImpl.class.getName());
 
 	@Override
-	public Optional<SingleRun> findLatestRun() {
+	public Optional<Run> findLatestRun() {
 		List<RunDBO> runs = ofy().load().type(RunDBO.class).limit(1).order("-begin").list();
 
 		if(runs.isEmpty())
@@ -36,7 +35,7 @@ public class RunDAOOfyImpl implements RunDAO {
 	}
 
 	@Override
-	public Optional<SingleRun> findOldestRun() {
+	public Optional<Run> findOldestRun() {
 		List<RunDBO> runs = ofy().load().type(RunDBO.class).limit(1).order("begin").list();
 
 		if(runs.isEmpty())
@@ -46,7 +45,7 @@ public class RunDAOOfyImpl implements RunDAO {
 	}
 
 	@Override
-	public void save(Set<SingleRun> runs) {
+	public void save(Set<Run> runs) {
 		if(LOG.isLoggable(Level.INFO))
 			LOG.info("Storing runs: " + runs);
 
@@ -55,7 +54,7 @@ public class RunDAOOfyImpl implements RunDAO {
 	}
 
 	@Override
-	public SingleRun getRun(String runId) {
+	public Run getRun(String runId) {
 		RunDBO dbo = ofy().load().type(RunDBO.class).id(runId).get();
 		if(dbo == null)
 			throw new EntityNotFoundException(runId);
@@ -64,7 +63,7 @@ public class RunDAOOfyImpl implements RunDAO {
 	}
 
 	@Override
-	public List<SingleRun> findRuns(Date from, Date to) {
+	public List<Run> findRuns(Date from, Date to) {
 
 		// find runs that begin in the given interval
 		Query<RunDBO> beginningRuns = ofy().load()
@@ -86,9 +85,9 @@ public class RunDAOOfyImpl implements RunDAO {
 
 		// load and return entities for the previous filtered keys
 		Map<Key<RunDBO>, RunDBO> results = ofy().load().keys(keys);
-		List<SingleRun> runs = Lists.newArrayList(RunDBO.toRuns(results.values()));
+		List<Run> runs = Lists.newArrayList(RunDBO.toRuns(results.values()));
 
-		Collections.sort(runs, new SingleRun.RunBeginComparator());
+		Collections.sort(runs, new Run.RunBeginComparator());
 
 		for(Run run : runs) {
 			Preconditions.checkArgument(!run.getEnd().before(from));
@@ -96,5 +95,11 @@ public class RunDAOOfyImpl implements RunDAO {
 		}
 
 		return runs;
+	}
+
+	@Override
+	public void delete(Set<Run> runs) {
+		Iterable<RunDBO> dbos = RunDBO.from(runs);
+		ofy().delete().entities(dbos);
 	}
 }

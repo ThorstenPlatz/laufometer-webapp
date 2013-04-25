@@ -8,7 +8,6 @@ import org.joda.time.Interval;
 import java.text.DecimalFormat;
 import java.text.SimpleDateFormat;
 import java.util.Collections;
-import java.util.Comparator;
 import java.util.Date;
 import java.util.List;
 
@@ -30,12 +29,11 @@ public class SingleRun implements RunTickProvider, Run {
 	private final int firstTick;
 	private final int lastTick;
 
-	private SingleRun(RunTickProvider runTicks)  {
+	private SingleRun(List<Date> runTicks)  {
 		Preconditions.checkNotNull(runTicks);
-		Preconditions.checkNotNull(runTicks.getTicks());
-		Preconditions.checkArgument(!runTicks.getTicks().isEmpty());
+		Preconditions.checkArgument(!runTicks.isEmpty());
 
-		ticks = Lists.newArrayList(runTicks.getTicks());
+		ticks = Lists.newArrayList(runTicks);
 		firstTick = 0;
 		lastTick = ticks.size() - 1;
 
@@ -105,17 +103,13 @@ public class SingleRun implements RunTickProvider, Run {
 		return "Run{begin=" + begin + ", end=" + end + ", dist=" + dist + " [m], duration=" + dur + " [s]}";
 	}
 
-	public static SingleRun fromRunTicks(RunTickProvider ticks) {
+	public static SingleRun fromRunTicks(RunTickProvider tickProvider) {
+		return new SingleRun(tickProvider.getTicks());
+	}
+
+	public static SingleRun fromRunTicks(List<Date> ticks) {
 		return new SingleRun(ticks);
 	}
 
-	public static class RunBeginComparator implements Comparator<SingleRun> {
-		@Override
-		public int compare(SingleRun o1, SingleRun o2) {
-			Preconditions.checkNotNull(o1);
-			Preconditions.checkNotNull(o2);
 
-			return o1.getBegin().compareTo(o2.getBegin());
-		}
-	}
 }

@@ -99,13 +99,20 @@ public class RunResource {
 
 		for(Date tick : ticks) {
 			long timestamp = tick.getTime()/1000;
-			if(timestamp < beginTimestamp)
-				LOG.finest("tick (" + new Date(timestamp*1000)  + ") is before begin (" + new Date(beginTimestamp*1000) + ")");
+			if(timestamp < beginTimestamp) {
+				if(LOG.isLoggable(Level.FINEST))
+				LOG.finest("tick ("   + ") is before begin (" + new Date(beginTimestamp*1000) + ")");
+			}
 
 			long intervalIndex = (timestamp-beginTimestamp) / groupInterval;
-
-			List<Date> intervalTicks = ticksPerInterval.get(intervalIndex);
-			intervalTicks.add(tick);
+			if(intervalIndex < 0 || intervalIndex >= numIntervals) {
+				if(LOG.isLoggable(Level.WARNING))
+					LOG.warning("tick (" + new Date(timestamp*1000) + ") has a calculated index of "
+							+ intervalIndex + " and is therefore ignored.");
+			} else {
+				List<Date> intervalTicks = ticksPerInterval.get(intervalIndex);
+				intervalTicks.add(tick);
+			}
 		}
 
 

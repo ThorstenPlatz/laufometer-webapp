@@ -7,7 +7,7 @@ import com.google.common.collect.Lists;
 import de.tp82.laufometer.core.RunImporter;
 import de.tp82.laufometer.core.RunRepository;
 import de.tp82.laufometer.core.TickImportHelper;
-import de.tp82.laufometer.model.run.SingleRun;
+import de.tp82.laufometer.model.run.Run;
 import de.tp82.laufometer.util.ExceptionHandling;
 import de.tp82.laufometer.web.api.rest.importer.model.ImportResult;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -46,7 +46,7 @@ public class ImportResource {
 		importDuration.start();
 
 		List<Date> ticks = Collections.emptyList();
-		List<SingleRun> importedRuns = Collections.emptyList();
+		List<Run> importedRuns = Collections.emptyList();
 
 		List<String> errors = Lists.newArrayList();
 		try {
@@ -86,10 +86,10 @@ public class ImportResource {
 	public Response getAllTicks() {
 		Calendar aLongTimeAgo = Calendar.getInstance();
 		aLongTimeAgo.set(2000, Calendar.JANUARY, 1);
-		List<SingleRun> runs = runRepository.findRuns(aLongTimeAgo.getTime(), Optional.<Date>absent());
+		List<Run> runs = runRepository.findRuns(aLongTimeAgo.getTime(), Optional.<Date>absent());
 
 		List<Date> ticks = Lists.newArrayList();
-		for(SingleRun run : runs)
+		for(Run run : runs)
 			ticks.addAll(run.getTicks());
 
 		Collections.sort(ticks);
