@@ -2,19 +2,21 @@ package de.tp82.laufometer.web.controllers;
 
 import com.google.common.base.Optional;
 import com.google.common.collect.Lists;
+import com.google.common.net.MediaType;
 import de.tp82.laufometer.core.RunImporter;
 import de.tp82.laufometer.core.RunRepository;
 import de.tp82.laufometer.core.TickImportHelper;
 import de.tp82.laufometer.model.run.Run;
 import de.tp82.laufometer.util.ExceptionHandling;
+import org.gmr.web.multipart.GMultipartFile;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.multipart.MultipartFile;
 
+import javax.servlet.http.HttpServletRequest;
 import java.util.Calendar;
 import java.util.Collections;
 import java.util.Date;
@@ -38,18 +40,19 @@ public class TickController {
 
 	@RequestMapping(value="/upload", method = RequestMethod.POST)
 	public String uploadTicksAction(ModelMap model,
-	                                @RequestParam(value="ticksFile", required = false) MultipartFile ticksFile,
+	                                @RequestParam(value="ticksFile", required = false) GMultipartFile ticksFile,
 	                                @RequestParam(value="ticksText", required = false) String ticksText,
-	                                @RequestParam(value="skipKnownTicks", required = false, defaultValue = "true") boolean skipKnownTicks) {
+	                                @RequestParam(value="skipKnownTicks", required = false, defaultValue = "true") boolean skipKnownTicks,
+	                                HttpServletRequest request) {
 		ActionResult result;
 		try {
-			List<Date> ticks = Collections.emptyList();
-			if(ticksFile != null)
-				//TODO tp: implement; see http://viralpatel.net/blogs/spring-mvc-multiple-file-upload-example/
-				ticks = Collections.emptyList();
-
+			List<Date> ticks = Lists.newArrayList();
+			if(ticksFile != null) {
+				ticks.addAll(TickImportHelper.extractTicks(ticksFile.getInputStream(),
+						MediaType.parse(ticksFile.getContentType())));
+			}
 			if(ticksText != null)
-				ticks = TickImportHelper.extractTicks(ticksText);
+				ticks.addAll(TickImportHelper.extractTicks(ticksText));
 
 			List<Run> importedRuns = runImporter.importTicksAsRuns(ticks, skipKnownTicks);
 
@@ -98,5 +101,4 @@ public class TickController {
 	public String uploadTicksForm() {
 		return "tick/uploadTicks";
 	}
-
 }

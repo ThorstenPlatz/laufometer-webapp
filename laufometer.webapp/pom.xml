@@ -65,6 +65,14 @@
             <version>${spring.version}</version>
         </dependency>
 
+        <!-- Multipart file upload for GAE, which is not compatible with standard spring file upload. -->
+        <dependency>
+            <groupId>gmultipart</groupId>
+            <artifactId>gmultipart</artifactId>
+            <version>0.4</version>
+        </dependency>
+
+
         <!-- Jersey -->
         <dependency>
             <groupId>com.sun.jersey</groupId>
@@ -147,5 +155,12 @@
             </plugin>
         </plugins>
     </build>
+
+    <repositories>
+        <repository>
+            <id>gmultipart</id>
+            <url>http://gmultipart.googlecode.com/svn/repo/m2</url>
+        </repository>
+    </repositories>
 
 </project>

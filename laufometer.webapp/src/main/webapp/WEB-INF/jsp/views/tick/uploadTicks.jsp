@@ -17,7 +17,7 @@
         <div class="container">
             <h1>Upload Ticks</h1>
 
-            <form class="form-horizontal"  method="post" action="">
+            <form class="form-horizontal"  method="post" action="" enctype="multipart/form-data">
                 <div class="control-group">
                     <label class="control-label" for="ticksText">paste ticks:</label>
                     <div class="controls">
@@ -25,9 +25,9 @@
                     </div>
                 </div>
                 <div class="control-group">
-                    <label class="control-label" for="ticksFile" class="disabled">from tick log file:</label>
+                    <label class="control-label" for="ticksFile">from file:</label>
                     <div class="controls">
-                        <input id="ticksFile" type="file" name="ticksFile" disabled="disabled"/>
+                        <input id="ticksFile" type="file" name="ticksFile"/>
                     </div>
                 </div>
                 <div class="control-group">
@@ -46,7 +46,6 @@
                     </div>
                 </div>
             </form>
-
         </div> <!-- container -->
     </body>
 </html>

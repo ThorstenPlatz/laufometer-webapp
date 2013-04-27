@@ -23,7 +23,7 @@
 
         <java.jdk.version>1.6</java.jdk.version>
         <junit.version>4.8.1</junit.version>
-        <spring.version>3.0.1.RELEASE</spring.version>
+        <spring.version>3.2.2.RELEASE</spring.version>
         <appengine.target.version>1.7.6</appengine.target.version>
 
         <gae.home>${settings.localRepository}/com/google/appengine/appengine-java-sdk/${appengine.target.version}/appengine-java-sdk-${appengine.target.version}</gae.home>

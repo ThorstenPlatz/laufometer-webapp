@@ -14,13 +14,9 @@
           p:viewClass="org.springframework.web.servlet.view.JstlView"
             />
 
-    <!--<bean id="urlMapping" class="org.springframework.web.servlet.handler.SimpleUrlHandlerMapping">-->
-        <!--<property name="mappings">-->
-            <!--<props>-->
-                <!--<prop key="/uploadTriggers">idEingabeFormController</prop>-->
-            <!--</props>-->
-        <!--</property>-->
-    <!--</bean>-->
+    <bean id="multipartResolver" class="org.gmr.web.multipart.GMultipartResolver">
+        <property name="maxUploadSize" value="10485760" />
+    </bean>
 
     <context:component-scan base-package="de.tp82.laufometer.web.controllers"/>
 </beans>  
