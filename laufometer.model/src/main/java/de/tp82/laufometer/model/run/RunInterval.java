@@ -8,6 +8,9 @@ import java.util.Comparator;
 import java.util.Date;
 import java.util.List;
 
+import static de.tp82.laufometer.util.FormattingUtils.DateFormatting.ISO_8601_FORMAT;
+import static de.tp82.laufometer.util.FormattingUtils.NumberFormatting.DECIMAL_FORMAT;
+
 /**
  * @author Thorsten Platz
  */
@@ -77,4 +80,13 @@ public class RunInterval {
 		}
 	}
 
+	@Override
+	public String toString() {
+		return "RunInterval{" +
+				"intervalBegin=" + ISO_8601_FORMAT.format(intervalBegin) +
+				", intervalEnd=" + ISO_8601_FORMAT.format(intervalEnd) +
+				", runDuration=" + DECIMAL_FORMAT.format(runDuration) +
+				", runDistance=" + DECIMAL_FORMAT.format(runDistance) +
+				'}';
+	}
 }

@@ -99,15 +99,24 @@
                     lazyFetching: true,
 
                     viewDisplay: function(view) {
+                        var height;
+
                         if(view.name != lastView) {
                             if (view.name == 'month'){
                                 usedEventSource = eventSources.monthSource;
+
+                                // auto height for month view
+                                height = NaN;
                             }
                             if (view.name == 'agendaWeek' || view.name == 'basicWeek'){
                                 usedEventSource = eventSources.weekSource;
+
+                                height = 2500;
                             }
                             if (view.name == 'agendaDay' || view.name == 'basicDay'){
                                 usedEventSource = eventSources.daySource;
+
+                                height = 2500;
                             }
 
                             $('#calendar')
@@ -117,6 +126,9 @@
                                 .fullCalendar('removeEvents')
                                 .fullCalendar('addEventSource', usedEventSource)
                                 .fullCalendar('refetchEvents');
+
+                            // resize height for agenda views
+                            $('#calendar').fullCalendar('option', 'contentHeight', height)
 
                             lastView = view.name;
                         }
