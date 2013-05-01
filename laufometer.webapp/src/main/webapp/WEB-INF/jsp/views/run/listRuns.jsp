@@ -21,7 +21,7 @@
     </head>
     <body>
     <div class="container">
-        <h1>Runs</h1>
+        <h1>Run Intervals</h1>
 
         <p class="text-right"><c:out value="${fn:length(runs)}"/> runs</p>
 
@@ -31,35 +31,28 @@
                     <th>Begin</th>
                     <th>End</th>
                     <th>Satistics</th>
-                    <th>Actions</th>
                 </tr>
             </thead>
             <tbody>
             <c:forEach var="run" items="${runs}">
                 <tr>
                     <td>
-                        <fmt:formatDate value="${run.begin}" pattern="${datePattern}" /><br/>
-                        <fmt:formatDate value="${run.begin}" pattern="${timePattern}" />
+                        <fmt:formatDate value="${run.intervalBegin}" pattern="${datePattern}" /><br/>
+                        <fmt:formatDate value="${run.intervalBegin}" pattern="${timePattern}" />
                     </td>
                     <td>
-                        <fmt:formatDate value="${run.end}" pattern="${datePattern}" /><br/>
-                        <fmt:formatDate value="${run.end}" pattern="${timePattern}" />
+                        <fmt:formatDate value="${run.intervalEnd}" pattern="${datePattern}" /><br/>
+                        <fmt:formatDate value="${run.intervalEnd}" pattern="${timePattern}" />
                     </td>
                     <td>
                         <ul>
-                            <li>Duration: <fmt:formatNumber value="${run.duration}" pattern="##.##" /></li>
-                            <li>Distance: <fmt:formatNumber value="${run.distance}" pattern="##.##" /></li>
+                            <li>Duration: <fmt:formatNumber value="${run.runDuration}" pattern="##.##" /></li>
+                            <li>Distance: <fmt:formatNumber value="${run.runDistance}" pattern="##.##" /></li>
                             <li title="<fmt:formatNumber value="${run.averageSpeed}" pattern="##.##" /> m/s">
                                 <c:set var="speedInKmPH" value="${run.averageSpeed * 3.6}"/>
                                 Velocity: <fmt:formatNumber value="${speedInKmPH}" pattern="##.##" />
                             </li>
                         </ul>
-                    </td>
-                    <td>
-                        <a href="<%-- edit/<c:out value="${run.id}"/> --%>" class="btn disabled">edit</a>
-                        <form action="delete/<c:out value="${run.id}"/>" method="post">
-                            <input type="submit" value="delete" class="btn btn-danger disabled" disabled="disabled"/>
-                        </form>
                     </td>
                 </tr>
             </c:forEach>

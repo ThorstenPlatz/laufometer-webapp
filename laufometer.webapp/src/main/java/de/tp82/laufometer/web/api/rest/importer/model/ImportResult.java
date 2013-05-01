@@ -1,6 +1,6 @@
 package de.tp82.laufometer.web.api.rest.importer.model;
 
-import de.tp82.laufometer.model.run.Run;
+import de.tp82.laufometer.model.run.RunInterval;
 
 import java.util.Date;
 import java.util.List;
@@ -16,7 +16,7 @@ public class ImportResult {
 	private long importDuration;
 	private List<String> errors;
 
-	public ImportResult(List<Run> runs, List<Date> ticks, long duration, List<String> errors) {
+	public ImportResult(List<RunInterval> runs, List<Date> ticks, long duration, List<String> errors) {
 		numberOfImportedRuns = runs.size();
 		numberOfImportedTicks = ticks.size();
 		if(!ticks.isEmpty()) {

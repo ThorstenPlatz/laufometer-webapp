@@ -1,6 +1,6 @@
 package de.tp82.laufometer.web.api.rest;
 
-import de.tp82.laufometer.util.DateUtils;
+import de.tp82.laufometer.util.FormattingUtils.DateFormatting;
 import org.codehaus.jackson.map.ObjectMapper;
 import org.codehaus.jackson.map.SerializationConfig;
 import org.codehaus.jackson.map.annotate.JsonSerialize;
@@ -28,7 +28,7 @@ public class ObjectMapperConfigurer implements ContextResolver<ObjectMapper> {
 		objectMapper.configure(SerializationConfig.Feature.WRITE_NULL_MAP_VALUES, false);
 		objectMapper.configure(SerializationConfig.Feature.WRAP_ROOT_VALUE, false);
 		objectMapper.setSerializationInclusion(JsonSerialize.Inclusion.NON_NULL);
-		objectMapper.setDateFormat(DateUtils.ISO_8601_FORMAT);
+		objectMapper.setDateFormat(DateFormatting.ISO_8601_FORMAT);
 	}
 
 	@Override

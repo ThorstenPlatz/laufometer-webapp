@@ -25,6 +25,11 @@
             <artifactId>laufometer.core</artifactId>
             <version>${project.version}</version>
         </dependency>
+        <dependency>
+            <groupId>de.tp82.laufometer</groupId>
+            <artifactId>laufometer.commons</artifactId>
+            <version>${project.version}</version>
+        </dependency>
 
         <dependency>
             <groupId>javax.servlet</groupId>

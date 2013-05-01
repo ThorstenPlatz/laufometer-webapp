@@ -1,7 +1,7 @@
 package de.tp82.laufometer.web.api.rest.run.model;
 
 import com.google.common.collect.Lists;
-import de.tp82.laufometer.model.run.Run;
+import de.tp82.laufometer.model.run.RunInterval;
 import org.joda.time.Duration;
 import org.joda.time.format.PeriodFormatter;
 import org.joda.time.format.PeriodFormatterBuilder;
@@ -20,17 +20,17 @@ public class RunCalendarEvent {
 	public String url;
 
 
-	public static RunCalendarEvent from(Run run) {
+	public static RunCalendarEvent from(RunInterval run) {
 		RunCalendarEvent event = new RunCalendarEvent();
 
-		event.start = run.getBegin().getTime()/1000;
-		event.end = run.getEnd().getTime()/1000;
+		event.start = run.getIntervalBegin().getTime()/1000;
+		event.end = run.getIntervalEnd().getTime()/1000;
 
 		DecimalFormat formatter = new DecimalFormat( "#0.0" );
-		String distance = formatter.format(run.getDistance()) + " [m]";
+		String distance = formatter.format(run.getRunDistance()) + " [m]";
 		String velocity = formatter.format(run.getAverageSpeed() * 3.6) + " [km/h]";
 
-		Duration duration = new Duration(run.getBegin().getTime(), run.getEnd().getTime());
+		Duration duration = new Duration(run.getIntervalBegin().getTime(), run.getIntervalEnd().getTime());
 		PeriodFormatter durationFormat = new PeriodFormatterBuilder()
 				.printZeroAlways()
 				.appendMinutes()
@@ -47,9 +47,9 @@ public class RunCalendarEvent {
 		return event;
 	}
 
-	public static List<RunCalendarEvent> from(Iterable<Run> runs) {
+	public static List<RunCalendarEvent> from(Iterable<RunInterval> runs) {
 		List<RunCalendarEvent> events = Lists.newArrayList();
-		for(Run run : runs)
+		for(RunInterval run : runs)
 			events.add(from(run));
 		return events;
 	}

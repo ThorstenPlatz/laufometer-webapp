@@ -11,8 +11,8 @@
           <element id="archive" name="laufometer.core-1.0-SNAPSHOT.jar">
             <element id="module-output" name="laufometer.core" />
           </element>
-          <element id="archive" name="laufometer.model-1.0-SNAPSHOT.jar">
-            <element id="module-output" name="laufometer.model" />
+          <element id="archive" name="laufometer.commons-1.0-SNAPSHOT.jar">
+            <element id="module-output" name="laufometer.commons" />
           </element>
           <element id="library" level="project" name="Maven: com.google.guava:guava:14.0.1" />
           <element id="library" level="project" name="Maven: com.google.appengine:appengine-api-1.0-sdk:1.7.6" />
@@ -24,6 +24,9 @@
           <element id="library" level="project" name="Maven: aopalliance:aopalliance:1.0" />
           <element id="library" level="project" name="Maven: org.springframework:spring-expression:3.2.2.RELEASE" />
           <element id="library" level="project" name="Maven: joda-time:joda-time:2.2" />
+          <element id="archive" name="laufometer.model-1.0-SNAPSHOT.jar">
+            <element id="module-output" name="laufometer.model" />
+          </element>
           <element id="archive" name="laufometer.persistence.api-1.0-SNAPSHOT.jar">
             <element id="module-output" name="laufometer.persistence.api" />
           </element>
@@ -40,6 +43,7 @@
           <element id="library" level="project" name="Maven: com.fasterxml.jackson.core:jackson-annotations:2.0.6" />
           <element id="library" level="project" name="Maven: com.fasterxml.jackson.core:jackson-core:2.0.6" />
           <element id="library" level="project" name="Maven: com.google.appengine:appengine-api-labs:1.7.2" />
+          <element id="library" level="project" name="Maven: javax.persistence:persistence-api:1.0.2" />
           <element id="library" level="project" name="Maven: jstl:jstl:1.2" />
           <element id="library" level="project" name="Maven: javax.servlet:jsp-api:2.0" />
           <element id="library" level="project" name="Maven: org.springframework:spring-web:3.2.2.RELEASE" />

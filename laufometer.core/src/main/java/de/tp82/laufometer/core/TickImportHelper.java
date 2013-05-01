@@ -6,7 +6,7 @@ import com.google.common.base.Throwables;
 import com.google.common.collect.Lists;
 import com.google.common.io.Closeables;
 import com.google.common.net.MediaType;
-import de.tp82.laufometer.util.DateUtils;
+import de.tp82.laufometer.util.FormattingUtils;
 
 import java.io.IOException;
 import java.io.InputStream;
@@ -51,7 +51,7 @@ public class TickImportHelper {
 				.split(lineSeparatedTicks);
 
 		List<Date> ticks = Lists.newArrayList();
-		DateFormat dateFormatter = DateUtils.IMPORT_FORMAT;
+		DateFormat dateFormatter = FormattingUtils.DateFormatting.IMPORT_FORMAT;
 
 		List<String> errors = Lists.newArrayList();
 		for(String tickString : tickStrings) {
@@ -108,7 +108,7 @@ public class TickImportHelper {
 				try {
 					lineSeparatedTicks.append(readTicksFromTextFile(zin));
 				} catch (Exception exc) {
-					LOG.warning("Error reading " + filename + " files from uploaded zip archive.");
+					LOG.warning("Error reading " + filename + " from uploaded zip archive.");
 				} finally {
 					zin.closeEntry();
 				}
@@ -116,7 +116,7 @@ public class TickImportHelper {
 			}
 
 			if(LOG.isLoggable(Level.INFO))
-				LOG.info("Read " + numFilesInZipArchive + " from uploaded zip archive.");
+				LOG.info("Reading " + numFilesInZipArchive + " files from uploaded zip archive.");
 
 			return lineSeparatedTicks.toString();
 		} catch (IOException exc) {

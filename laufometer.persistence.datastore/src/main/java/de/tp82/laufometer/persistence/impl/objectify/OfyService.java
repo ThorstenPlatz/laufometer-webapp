@@ -3,7 +3,7 @@ package de.tp82.laufometer.persistence.impl.objectify;
 import com.googlecode.objectify.Objectify;
 import com.googlecode.objectify.ObjectifyFactory;
 import com.googlecode.objectify.ObjectifyService;
-import de.tp82.laufometer.persistence.impl.objectify.dbo.RunDBO;
+import de.tp82.laufometer.persistence.impl.objectify.dbo.RunIntervalDBO;
 import de.tp82.laufometer.persistence.impl.objectify.dbo.WatchdogDBO;
 
 /**
@@ -12,7 +12,7 @@ import de.tp82.laufometer.persistence.impl.objectify.dbo.WatchdogDBO;
 public class OfyService {
 	static {
 		// register all Entities here
-		factory().register(RunDBO.class);
+		factory().register(RunIntervalDBO.class);
 		factory().register(WatchdogDBO.class);
 	}
 

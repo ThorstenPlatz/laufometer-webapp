@@ -137,6 +137,9 @@
 
         <div id="calendar"></div>
 
+        <br/>
+        <a href="javascript:history.back();" class="btn btn-inverse">back</a>
+
     </div>
     </body>
 </html>

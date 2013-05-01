@@ -13,6 +13,11 @@
     <artifactId>laufometer.model</artifactId>
 
     <dependencies>
+        <dependency>
+            <groupId>de.tp82.laufometer</groupId>
+            <artifactId>laufometer.commons</artifactId>
+            <version>${project.version}</version>
+        </dependency>
     </dependencies>
 
     <build>

@@ -1,8 +1,7 @@
-package de.tp82.laufometer.core;
+package de.tp82.laufometer.core.importer;
 
 import com.google.common.collect.Lists;
-import de.tp82.laufometer.model.run.CompositeRun;
-import de.tp82.laufometer.model.run.Run;
+import de.tp82.laufometer.model.run.RunInterval;
 import de.tp82.laufometer.util.BeanProvider;
 import org.joda.time.DateTime;
 import org.springframework.beans.factory.config.BeanDefinition;
@@ -24,19 +23,19 @@ public class RunDayGrouper {
 	public static final long QUARTERLY = 60 * 15;
 
 	private long groupInterval;
-	private List<Set<Run>> runGroups;
+	private List<Set<RunInterval>> runGroups;
 
 	private RunDayGrouper() {
 	}
 
-	public List<Run> groupRuns(Iterable<Run> runs) {
-		List<Run> groupedRuns = Lists.newArrayList();
+	public List<RunInterval> groupRuns(Iterable<RunInterval> runs) {
+		List<RunInterval> groupedRuns = Lists.newArrayList();
 
-		for(Run run : runs)
+		for(RunInterval run : runs)
 			insertIntoGroup(run);
 
-		for(Set<Run> group : runGroups) {
-			CompositeRun groupRun = CompositeRun.from(group);
+		for(Set<RunInterval> group : runGroups) {
+			RunInterval groupRun = RunInterval.from(group);
 			groupedRuns.add(groupRun);
 		}
 
@@ -52,13 +51,13 @@ public class RunDayGrouper {
 		return (int) (secondsInDay / groupInterval);
 	}
 
-	private void insertIntoGroup(Run run) {
+	private void insertIntoGroup(RunInterval run) {
 		int groupIndex = getGroupIndex(run);
 		runGroups.get(groupIndex).add(run);
 	}
 
-	private int getGroupIndex(Run run) {
-		Date refTime = run.getBegin();
+	private int getGroupIndex(RunInterval run) {
+		Date refTime = run.getIntervalBegin();
 		return getGroupIndex(refTime);
 	}
 

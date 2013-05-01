@@ -3,7 +3,7 @@ package de.tp82.laufometer.web.api.rest.watchdog;
 import com.google.appengine.repackaged.com.google.common.base.Preconditions;
 import com.google.common.base.Optional;
 import com.google.common.base.Strings;
-import de.tp82.laufometer.core.WatchdogService;
+import de.tp82.laufometer.core.importer.WatchdogService;
 import de.tp82.laufometer.model.watchdog.Watchdog;
 import de.tp82.laufometer.persistence.WatchdogDAO;
 import de.tp82.laufometer.util.ExceptionHandling;

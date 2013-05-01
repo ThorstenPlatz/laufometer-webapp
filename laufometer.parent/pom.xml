@@ -16,6 +16,7 @@
     	<module>../laufometer.persistence.api</module>
         <module>../laufometer.persistence.datastore</module>
     	<module>../laufometer.webapp</module>
+        <module>../laufometer.commons</module>
     </modules>
 
     <properties>

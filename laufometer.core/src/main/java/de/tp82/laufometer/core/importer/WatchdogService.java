@@ -1,10 +1,10 @@
-package de.tp82.laufometer.core;
+package de.tp82.laufometer.core.importer;
 
 import com.google.appengine.repackaged.com.google.common.collect.Sets;
 import com.google.common.base.*;
 import de.tp82.laufometer.model.watchdog.Watchdog;
 import de.tp82.laufometer.persistence.WatchdogDAO;
-import de.tp82.laufometer.util.DateUtils;
+import de.tp82.laufometer.util.FormattingUtils.DateFormatting;
 import org.joda.time.DateTime;
 import org.joda.time.Duration;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -54,7 +54,7 @@ public class WatchdogService {
 
 		if(LOG.isLoggable(Level.INFO))
 			LOG.info("Executing watchdog check for keepalive ping deadline: "
-					+ DateUtils.ISO_8601_FORMAT.format(pingDeadline.toDate()));
+					+ DateFormatting.ISO_8601_FORMAT.format(pingDeadline.toDate()));
 
 		Iterable<Watchdog> watchdogs = watchdogRepository.findAllWatchdogs();
 
@@ -186,7 +186,7 @@ public class WatchdogService {
 			String lastKeepalive = "";
 			if(watchdog.getLastPing().isPresent())
 				lastKeepalive = "Last keepalive ping is from "
-						+ DateUtils.ISO_8601_FORMAT.format(watchdog.getLastPing().get());
+						+ DateFormatting.ISO_8601_FORMAT.format(watchdog.getLastPing().get());
 			else
 				lastKeepalive = "Never received a keepalive ping.";
 			return lastKeepalive + ".\n"

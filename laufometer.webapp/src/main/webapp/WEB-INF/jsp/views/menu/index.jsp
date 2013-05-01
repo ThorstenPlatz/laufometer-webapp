@@ -37,7 +37,6 @@
         <li>
             <h3>ticks</h3>
             <ul>
-                <li><a href="${prefix}/web/tick">list all ticks</a></li>
                 <li><a href="${prefix}/web/tick/upload">upload ticks</a></li>
             </ul>
         </li>

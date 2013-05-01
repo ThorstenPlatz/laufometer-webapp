@@ -40,10 +40,10 @@
                 <c:set var="availablity" value="No runs available."/>
             </c:when>
             <c:when test="${not empty oldestRun and not empty newestRun}">
-                <jsp:useBean id="oldestRun" scope="request" type="de.tp82.laufometer.model.run.Run"/>
-                <jsp:useBean id="newestRun" scope="request" type="de.tp82.laufometer.model.run.Run"/>
+                <jsp:useBean id="oldestRun" scope="request" type="de.tp82.laufometer.model.run.RunInterval"/>
+                <jsp:useBean id="newestRun" scope="request" type="de.tp82.laufometer.model.run.RunInterval"/>
 
-                <c:set var="availablity" value="Runs are available from ${oldestRun.begin} to ${newestRun.end}."/>
+                <c:set var="availablity" value="Runs are available from ${oldestRun.intervalBegin} to ${newestRun.intervalEnd}."/>
             </c:when>
         </c:choose>
 

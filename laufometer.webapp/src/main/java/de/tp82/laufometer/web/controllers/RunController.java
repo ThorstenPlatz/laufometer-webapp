@@ -2,7 +2,7 @@ package de.tp82.laufometer.web.controllers;
 
 import com.google.common.base.Optional;
 import de.tp82.laufometer.core.RunRepository;
-import de.tp82.laufometer.model.run.Run;
+import de.tp82.laufometer.model.run.RunInterval;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
@@ -27,11 +27,11 @@ public class RunController {
 
 	@RequestMapping("/")
 	public String indexRuns(ModelMap model) {
-		Optional<Run> oldestRun = runRepository.findOldestRun();
+		Optional<RunInterval> oldestRun = runRepository.findOldestRun();
 
-		List<Run> runs;
+		List<RunInterval> runs;
 		if(oldestRun.isPresent()) {
-			runs = runRepository.findRuns(oldestRun.get().getBegin(), Optional.<Date>absent());
+			runs = runRepository.findRuns(oldestRun.get().getIntervalBegin(), Optional.<Date>absent());
 		} else
 			runs = Collections.emptyList();
 
@@ -47,8 +47,8 @@ public class RunController {
 
 	@RequestMapping("/administration")
 	public String administerRuns(ModelMap model) {
-		Optional<Run> oldest = runRepository.findOldestRun();
-		Optional<Run> newest = runRepository.findLatestRun();
+		Optional<RunInterval> oldest = runRepository.findOldestRun();
+		Optional<RunInterval> newest = runRepository.findLatestRun();
 
 		model.put("oldestRun", oldest.orNull());
 		model.put("newestRun", newest.orNull());

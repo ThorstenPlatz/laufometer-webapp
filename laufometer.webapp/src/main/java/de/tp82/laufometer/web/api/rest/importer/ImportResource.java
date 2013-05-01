@@ -1,13 +1,12 @@
 package de.tp82.laufometer.web.api.rest.importer;
 
-import com.google.common.base.Optional;
 import com.google.common.base.Preconditions;
 import com.google.common.base.Stopwatch;
 import com.google.common.collect.Lists;
-import de.tp82.laufometer.core.RunImporter;
 import de.tp82.laufometer.core.RunRepository;
 import de.tp82.laufometer.core.TickImportHelper;
-import de.tp82.laufometer.model.run.Run;
+import de.tp82.laufometer.core.importer.RunImporter;
+import de.tp82.laufometer.model.run.RunInterval;
 import de.tp82.laufometer.util.ExceptionHandling;
 import de.tp82.laufometer.web.api.rest.importer.model.ImportResult;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -16,7 +15,6 @@ import org.springframework.stereotype.Service;
 import javax.ws.rs.*;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
-import java.util.Calendar;
 import java.util.Collections;
 import java.util.Date;
 import java.util.List;
@@ -46,7 +44,7 @@ public class ImportResource {
 		importDuration.start();
 
 		List<Date> ticks = Collections.emptyList();
-		List<Run> importedRuns = Collections.emptyList();
+		List<RunInterval> importedRuns = Collections.emptyList();
 
 		List<String> errors = Lists.newArrayList();
 		try {
@@ -78,22 +76,5 @@ public class ImportResource {
 			return Response.ok().entity(result).build();
 		else
 			return Response.status(Response.Status.BAD_REQUEST).entity(result).build();
-	}
-
-
-	@GET
-	@Path("/list")
-	public Response getAllTicks() {
-		Calendar aLongTimeAgo = Calendar.getInstance();
-		aLongTimeAgo.set(2000, Calendar.JANUARY, 1);
-		List<Run> runs = runRepository.findRuns(aLongTimeAgo.getTime(), Optional.<Date>absent());
-
-		List<Date> ticks = Lists.newArrayList();
-		for(Run run : runs)
-			ticks.addAll(run.getTicks());
-
-		Collections.sort(ticks);
-
-		return Response.ok(ticks).build();
 	}
 }
