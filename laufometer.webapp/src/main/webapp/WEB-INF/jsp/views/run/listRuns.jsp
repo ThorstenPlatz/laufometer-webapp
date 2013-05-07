@@ -6,6 +6,8 @@
 <c:set var="prefix" value="${pageContext.request.contextPath}"/>
 
 <jsp:useBean id="runs" scope="request" type="java.util.List"/>
+<jsp:useBean id="totalRunOfDay" scope="request" type="de.tp82.laufometer.model.run.RunInterval"/>
+<jsp:useBean id="day" scope="request" type="java.util.Date"/>
 
 <c:set var="datePattern" value="yyyy-MM-dd"/>
 <c:set var="timePattern" value="HH:mm:ss"/>
@@ -22,6 +24,8 @@
     <body>
     <div class="container">
         <h1>Run Intervals</h1>
+
+        <h2>For <fmt:formatDate value="${day}" pattern="${datePattern}" /></h2>
 
         <p class="text-right"><c:out value="${fn:length(runs)}"/> runs</p>
 
@@ -57,6 +61,28 @@
                 </tr>
             </c:forEach>
             </tbody>
+            <tfoot>
+            <tr>
+                <td>
+                    <fmt:formatDate value="${totalRunOfDay.intervalBegin}" pattern="${datePattern}" /><br/>
+                    <fmt:formatDate value="${totalRunOfDay.intervalBegin}" pattern="${timePattern}" />
+                </td>
+                <td>
+                    <fmt:formatDate value="${totalRunOfDay.intervalEnd}" pattern="${datePattern}" /><br/>
+                    <fmt:formatDate value="${totalRunOfDay.intervalEnd}" pattern="${timePattern}" />
+                </td>
+                <td>
+                    <ul>
+                        <li>Duration: <fmt:formatNumber value="${totalRunOfDay.runDuration}" pattern="##.##" /></li>
+                        <li>Distance: <fmt:formatNumber value="${totalRunOfDay.runDistance}" pattern="##.##" /></li>
+                        <li title="<fmt:formatNumber value="${totalRunOfDay.averageSpeed}" pattern="##.##" /> m/s">
+                            <c:set var="speedInKmPH" value="${totalRunOfDay.averageSpeed * 3.6}"/>
+                            Velocity: <fmt:formatNumber value="${speedInKmPH}" pattern="##.##" />
+                        </li>
+                    </ul>
+                </td>
+            </tr>
+            </tfoot>
         </table>
 
         <a href="javascript:history.back();" class="btn btn-inverse">back</a>

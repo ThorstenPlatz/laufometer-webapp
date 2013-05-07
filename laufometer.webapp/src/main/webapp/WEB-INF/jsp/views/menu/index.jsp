@@ -21,7 +21,6 @@
         <li>
             <h3>runs</h3>
             <ul>
-                <li><a href="${prefix}/web/run/">list all runs</a></li>
                 <li><a href="${prefix}/web/run/calendar">run calendar</a></li>
                 <li><a href="${prefix}/web/run/administration">run administration</a></li>
             </ul>

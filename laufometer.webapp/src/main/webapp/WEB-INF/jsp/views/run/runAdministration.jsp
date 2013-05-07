@@ -24,6 +24,7 @@
             $(function() {
                 $('#from').datepicker();
                 $('#to').datepicker();
+                $('#day').datepicker();
             });
         </script>
 
@@ -33,7 +34,7 @@
     <div class="container">
         <h1>Run Administration</h1>
 
-        <h2>Delete Runs</h2>
+
 
         <c:choose>
             <c:when test="${empty oldestRun and empty newestRun}">
@@ -43,25 +44,34 @@
                 <jsp:useBean id="oldestRun" scope="request" type="de.tp82.laufometer.model.run.RunInterval"/>
                 <jsp:useBean id="newestRun" scope="request" type="de.tp82.laufometer.model.run.RunInterval"/>
 
-                <c:set var="availablity" value="Runs are available from ${oldestRun.intervalBegin} to ${newestRun.intervalEnd}."/>
+                <c:set var="availablity">
+                    Runs are available from
+                    <fmt:formatDate value="${oldestRun.intervalBegin}" pattern="${datePattern}"/>
+                    to
+                    <fmt:formatDate value="${newestRun.intervalEnd}" pattern="${datePattern}"/>.
+                </c:set>
             </c:when>
         </c:choose>
 
         <p><c:out value="${availablity}"/></p>
 
-        <form class="form-inline" action="delete" method="post">
-            <label for="from">From </label>
-            <input type="text" class="input-small" id="from" name="from" placeholder="from" data-date-format="dd.mm.yyyy">
-            <label for="to"> to </label>
-            <input type="text" class="input-small" id="to" name="to" placeholder="to" data-date-format="dd.mm.yyyy">
-
-            <br/><br/>
-
-            <a href="javascript:history.back();" class="btn btn-inverse">back</a>
-            <input type="reset" class="btn btn-danger" value="reset"/>
-            <input type="submit" class="btn btn-success" value="delete runs"/>
+        <h2>Show Runs</h2>
+        <form class="form-inline" action="list" method="get">
+            <label for="day">day</label>
+            <input type="text" class="input-small" id="day" name="day" placeholder="day" data-date-format="yyyy-mm-dd">
+            <input type="submit" class="btn btn-success" value="show runs"/>
         </form>
 
+        <h2>Delete Runs</h2>
+        <form class="form-inline" action="delete" method="post">
+            <label for="from">From </label>
+            <input type="text" class="input-small" id="from" name="from" placeholder="from" data-date-format="yyyy-mm-dd">
+            <label for="to"> to </label>
+            <input type="text" class="input-small" id="to" name="to" placeholder="to" data-date-format="yyyy-mm-dd">
+            <input type="submit" class="btn btn-danger" value="delete runs"/>
+        </form>
+
+        <a href="javascript:history.back();" class="btn btn-inverse">back</a>
     </div>
     </body>
 </html>

@@ -3,6 +3,7 @@ package de.tp82.laufometer.web.controllers;
 import com.google.common.base.Optional;
 import de.tp82.laufometer.core.RunRepository;
 import de.tp82.laufometer.model.run.RunInterval;
+import org.joda.time.LocalDate;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
@@ -12,7 +13,6 @@ import org.springframework.web.bind.annotation.RequestParam;
 
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
-import java.util.Collections;
 import java.util.Date;
 import java.util.List;
 
@@ -22,21 +22,34 @@ import java.util.List;
 @Controller
 @RequestMapping(value = "/run")
 public class RunController {
+	private final static DateFormat DAY_FORMAT = new SimpleDateFormat("yyyy-MM-dd");
+
 	@Autowired
 	private RunRepository runRepository;
 
-	@RequestMapping("/")
-	public String indexRuns(ModelMap model) {
-		Optional<RunInterval> oldestRun = runRepository.findOldestRun();
+	@RequestMapping(value = "/list", method = RequestMethod.GET)
+	public String indexRuns(ModelMap model, @RequestParam("day") String dayString) {
+		try {
+			Date day = DAY_FORMAT.parse(dayString);
+			LocalDate theDay = new LocalDate(day.getTime());
 
-		List<RunInterval> runs;
-		if(oldestRun.isPresent()) {
-			runs = runRepository.findRuns(oldestRun.get().getIntervalBegin(), Optional.<Date>absent());
-		} else
-			runs = Collections.emptyList();
+			Date dayBegin = theDay.toDateTimeAtStartOfDay().toDate();
+			Date dayEnd = theDay.plusDays(1).toDateTimeAtStartOfDay().minusSeconds(1).toDate();
 
-		model.put("runs", runs);
-		return "run/listRuns";
+			List<RunInterval> runs = runRepository.findRuns(dayBegin, Optional.<Date>of(dayEnd));
+
+			model.put("day", day);
+			model.put("runs", runs);
+			model.put("totalRunOfDay", RunInterval.from(runs));
+			return "run/listRuns";
+
+		} catch (Exception exc) {
+			ActionResult result = ActionResult
+					.error("Error while loading runs: " + exc)
+					.build();
+			model.put("result", result);
+			return "generic/actionResult";
+		}
 	}
 
 
@@ -62,10 +75,8 @@ public class RunController {
 	                         @RequestParam("to") String toString) {
 		ActionResult result;
 		try {
-			DateFormat dateFormatter = new SimpleDateFormat("dd.MM.yyyy");
-
-			Date from = dateFormatter.parse(fromString);
-			Date to = dateFormatter.parse(toString);
+			Date from = DAY_FORMAT.parse(fromString);
+			Date to = DAY_FORMAT.parse(toString);
 
 			int numRunsDeleted = runRepository.delete(from, to);
 
