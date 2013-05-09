@@ -1,10 +1,10 @@
 package de.tp82.laufometer.web.api.rest.run;
 
 import com.google.common.base.Optional;
-import com.google.common.collect.Lists;
 import de.tp82.laufometer.core.RunRepository;
 import de.tp82.laufometer.core.importer.RunImporter;
 import de.tp82.laufometer.model.run.RunInterval;
+import de.tp82.laufometer.model.run.RunIntervalGrouper;
 import de.tp82.laufometer.util.FormattingUtils.DateFormatting;
 import de.tp82.laufometer.web.api.rest.run.model.RunCalendarEvent;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -47,22 +47,8 @@ public class RunResource {
 		List<RunInterval> runs = runRepository.findRuns(from, Optional.of(to));
 
 		// summarize the runIntervals into bigger groups
-		List<RunInterval> groups = Lists.newArrayList();
-
-		List<RunInterval> intervalsForGroup = Lists.newArrayList();
-		long groupLength = 0;
-		for(RunInterval run : runs) {
-			if(groupLength + run.getIntervalLength() <= groupInterval) {
-				intervalsForGroup.add(run);
-				groupLength += run.getIntervalLength();
-			} else {
-				RunInterval group = RunInterval.from(intervalsForGroup);
-				groups.add(group);
-
-				intervalsForGroup = Lists.newArrayList();
-				groupLength = 0;
-			}
-		}
+		RunIntervalGrouper grouper = new RunIntervalGrouper(groupInterval);
+		List<RunInterval> groups = grouper.group(runs);
 
 		List<RunCalendarEvent> events = RunCalendarEvent.from(groups);
 
@@ -74,5 +60,4 @@ public class RunResource {
 
 		return events;
 	}
-
 }

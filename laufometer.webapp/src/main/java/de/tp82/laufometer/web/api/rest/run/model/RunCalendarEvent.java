@@ -30,15 +30,28 @@ public class RunCalendarEvent {
 		String distance = formatter.format(run.getRunDistance()) + " [m]";
 		String velocity = formatter.format(run.getAverageSpeed() * 3.6) + " [km/h]";
 
-		Duration duration = new Duration(run.getIntervalBegin().getTime(), run.getIntervalEnd().getTime());
-		PeriodFormatter durationFormat = new PeriodFormatterBuilder()
-				.printZeroAlways()
-				.appendMinutes()
-				.appendSeparator(":")
-				.appendSeconds()
-				.toFormatter();
+		Duration duration = new Duration(Math.round(run.getRunDuration()*1000));
 
-		String durationString = durationFormat.print(duration.toPeriod()) + " [m:s]";
+		String durationString;
+		PeriodFormatter durationFormat;
+		if(duration.isLongerThan(new Duration(24*60*60*1000))) {
+			durationFormat = new PeriodFormatterBuilder()
+				.printZeroAlways()
+				.appendHours()
+				.appendSeparator(":")
+				.appendMinutes()
+				.toFormatter();
+			durationString= durationFormat.print(duration.toPeriod()) + " [h:m]";
+		} else {
+			durationFormat = new PeriodFormatterBuilder()
+					.printZeroAlways()
+					.appendSeparator(":")
+					.appendMinutes()
+					.appendSeparator(":")
+					.appendSeconds()
+					.toFormatter();
+			durationString = durationFormat.print(duration.toPeriod()) + " [m:s]";
+		}
 
 		event.title = distance + " / " + durationString + " / " + velocity;
 

@@ -20,7 +20,7 @@ import java.util.List;
  * @author Thorsten Platz
  */
 @Controller
-@RequestMapping(value = "/run")
+@RequestMapping("/run")
 public class RunController {
 	private final static DateFormat DAY_FORMAT = new SimpleDateFormat("yyyy-MM-dd");
 

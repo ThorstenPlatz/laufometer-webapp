@@ -24,7 +24,7 @@
 
         <style type="text/css">
             /* don't display event start time on month view */
-            .fc-view-month .fc-event-time{
+            .fc-event-time{
                 display : none;
             }
         </style>
@@ -34,14 +34,14 @@
 
             var eventSources = {
                 monthSource: {
-                    url: apiBasePath+'?groupInterval=86400',
+                    url: apiBasePath+'?groupInterval=83200',
                     type: 'GET',
                     cache: true,
                     error: function() { alert('something broke with monthSource...'); },
                     className: 'monthEvent'
                 },
                 weekSource: {
-                    url: apiBasePath+'?groupInterval=7200',
+                    url: apiBasePath+'?groupInterval=3600',
                     type: 'GET',
                     cache: true,
                     error: function() { alert('something broke with weekSource...'); },
@@ -91,9 +91,6 @@
                         day: 'dddd, d. MMM, yyyy'                  // Tuesday, 8. Sep, 2009
                     },
                     axisFormat: "H(:mm)",
-
-                    // event source
-                    //events: '${prefix}/api/public/run/calendar'
 
                     eventSources: [ usedEventSource ],
                     lazyFetching: true,
