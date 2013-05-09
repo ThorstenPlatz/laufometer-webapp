@@ -15,6 +15,7 @@
     <orderEntry type="inheritedJdk" />
     <orderEntry type="sourceFolder" forTests="false" />
     <orderEntry type="module" module-name="laufometer.model" />
+    <orderEntry type="module" module-name="laufometer.commons" />
     <orderEntry type="library" name="Maven: com.google.guava:guava:14.0.1" level="project" />
     <orderEntry type="library" name="Maven: com.google.appengine:appengine-api-1.0-sdk:1.7.6" level="project" />
     <orderEntry type="library" name="Maven: org.springframework:spring-core:3.2.2.RELEASE" level="project" />
@@ -24,8 +25,8 @@
     <orderEntry type="library" name="Maven: org.springframework:spring-aop:3.2.2.RELEASE" level="project" />
     <orderEntry type="library" name="Maven: aopalliance:aopalliance:1.0" level="project" />
     <orderEntry type="library" name="Maven: org.springframework:spring-expression:3.2.2.RELEASE" level="project" />
-    <orderEntry type="library" scope="TEST" name="Maven: org.springframework:spring-test:3.2.2.RELEASE" level="project" />
     <orderEntry type="library" name="Maven: joda-time:joda-time:2.2" level="project" />
+    <orderEntry type="library" scope="TEST" name="Maven: org.springframework:spring-test:3.2.2.RELEASE" level="project" />
     <orderEntry type="library" scope="TEST" name="Maven: junit:junit:4.8.1" level="project" />
     <orderEntry type="library" scope="TEST" name="Maven: org.mockito:mockito-all:1.9.0" level="project" />
     <orderEntry type="library" scope="TEST" name="Maven: com.google.appengine:appengine-testing:1.7.6" level="project" />
